@@ -12,8 +12,21 @@
         background: #eb1b6e;
       }
       
-      textarea {
-        font-size: 10px;
+      #exportBox, input {
+        margin-top: 10px;
+        width: 100%;
+        height: 200px;
+        overflow: auto;
+        
+        background: #ecf0f8;
+        color: #eb1b6e;
+        font-family: "Gulim";
+        font-size: 14px;
+        font-widht: bold;
+      }
+      input {
+        border: none;
+        height: auto;
       }
     </style>
   </head>
@@ -51,7 +64,7 @@
       var data = document.getElementById("exportBox");
       grid.addEventListener("mousedown", function(){isMouseDown = true; });
       grid.addEventListener("mouseup"  , function(){isMouseDown = false;
-                                                      data.innerText += "[" + datagrid + "],\n";
+                                                      document.getElementById("exportBox").innerText += document.getElementById("ID").value + ",[" + datagrid + "],\n";
                                                       createGrid(16, 16);
                                                      });
       function activate(cell){
@@ -59,7 +72,8 @@
       }
       
     </script>
-    <textarea id="exportBox"></textarea>
+    <input id="ID" value="1" placeholder="What character are you drawing?">
+    <div id="exportBox"></div>
 
   </body>
   
