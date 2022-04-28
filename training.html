@@ -5,47 +5,58 @@
       td {
         width: 10px;
         height: 12px;
+        background: #ecf0f8;
       }
       
       td.active {
-        background: black;
+        background: #eb1b6e;
       }
     </style>
   </head>
   
   <body>
+    <div id="gridContainer"></div>
     
     <script>
       //save datagrids
-      datagrids
+      datagrids = [];
       
       //make grid
-      var width = 16;
-      var height = 16;
       var datagrid = [];
-
-      var grid = document.createElement("table");
-          document.body.appendChild(grid);
-      for (var y = 0; y < height; ++y){
-          var row = document.createElement("tr");
-              grid.appendChild(row);
-          for (var x = 0; x < width; ++x){
-              var cell = document.createElement("td");
-                  datagrid.push(0);
-                  row.appendChild(cell);
-                  cell.id = width * y + x;
-                  cell.className = "inactive";
-                  cell.setAttribute("onmouseover", "javascript: activate(this);")
-          }
+      function createGrid(width, height)
+      {
+        datagrid = [];
+        
+        var gridContainer = document.getElementById("gridContainer");
+        gridContainer.innerHTML = "";
+        
+        var grid = document.createElement("table");
+            gridContainer.appendChild(grid);
+        for (var y = 0; y < height; ++y){
+            var row = document.createElement("tr");
+                grid.appendChild(row);
+            for (var x = 0; x < width; ++x){
+                var cell = document.createElement("td");
+                    datagrid.push(0);
+                    row.appendChild(cell);
+                    cell.id = width * y + x;
+                    cell.className = "inactive";
+                    cell.setAttribute("onmouseover", "javascript: activate(this);")
+            }
+        }
       }
+      createGrid(16, 16);
       
       //interact
       var isMouseDown = false;
       window.addEventListener("mousedown", function(){isMouseDown = true; });
-      window.addEventListener("mouseup"  , function(){isMouseDown = false;});
+      window.addEventListener("mouseup"  , function(){isMouseDown = false;
+                                                      datagrids.push(datagrid);
+                                                      createGrid();
+                                                     });
       function activate(cell){
         if (isMouseDown) { cell.className = 'active';   datagrid[parseInt(cell.id)] = 1; }
-        else             { cell.className = 'inactive'; datagrid[parseInt(cell.id)] = 0; }
+        //else             { cell.className = 'inactive'; datagrid[parseInt(cell.id)] = 0; }
       }
       
       
