@@ -2,10 +2,15 @@
   
   <head>
     <style>
+      table {
+        border-collapse: collapse;
+      }
+      
       td {
-        width: 10px;
-        height: 12px;
+        width: 14px;
+        height: 17px;
         background: #ecf0f8;
+        border: .1px solid #9037a3;
       }
       
       td.active {
@@ -27,7 +32,7 @@
         white-space: nowrap;
       }
       input, a {
-        width: 300px;
+        width: 200px;
         text-align: center;
         border: none;
         padding: 10px;
@@ -73,15 +78,17 @@
       grid.addEventListener("mousedown", function(){isMouseDown = true; });
       grid.addEventListener("mouseup"  , function(){isMouseDown = false;
                                                       document.getElementById("exportBox").innerText += document.getElementById("ID").value + ",[" + datagrid + "],\n";
-                                                      document.getElementById("exportButton").setAttribute("href", "data:text/plain," + document.getElementById("exportBox").innerText)
-                                                      createGrid(16, 16);
-                                                     });
+                                                      document.getElementById("exportButton").setAttribute("href", "data:text/plain," + document.getElementById("exportBox").innerText);
+                                                      document.getElementById("exportButton").setAttribute("download", document.getElementById("PJ").value);
+                                                      createGrid(16, 16);  
+                                                   });
       function activate(cell){
         if (isMouseDown) { cell.className = 'active';   datagrid[parseInt(cell.id)] = 1; }
       }
             
     </script>
     <input id="ID" value="1" placeholder="What character are you drawing?">
+    <input id="PJ" value="Numerals" placeholder="Project Title?">
     <a id="exportButton" href="" download>Download as TXT</a>
     <div id="exportBox" contenteditable="true"></div>
 
