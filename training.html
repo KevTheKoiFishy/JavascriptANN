@@ -7,12 +7,17 @@
         height: 12px;
       }
       
+      td.active {
+        background: black;
+      }
     </style>
   </head>
   
   <body>
     
     <script>
+      //save datagrids
+      datagrids
       
       //make grid
       var width = 16;
@@ -29,13 +34,19 @@
                   datagrid.push(0);
                   row.appendChild(cell);
                   cell.id = width * y + x;
-                  cell.value = 0;
-                  cell.setAttribute("onmousedown", "javascript: datagrid[this.id] = 1; this.value = 1;")
+                  cell.className = "inactive";
+                  cell.setAttribute("onmouseover", "javascript: activate(this);")
           }
       }
       
       //interact
-      
+      var isMouseDown = false;
+      window.addEventListener("mousedown", function(){isMouseDown = true; });
+      window.addEventListener("mouseup"  , function(){isMouseDown = false;});
+      function activate(cell){
+        if (isMouseDown) { cell.className = 'active';   datagrid[parseInt(cell.id)] = 1; }
+        else             { cell.className = 'inactive'; datagrid[parseInt(cell.id)] = 0; }
+      }
       
       
     </script>
