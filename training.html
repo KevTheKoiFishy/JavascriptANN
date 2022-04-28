@@ -11,27 +11,25 @@
       td.active {
         background: #eb1b6e;
       }
+      
+      textarea {
+        font-size: 10px;
+      }
     </style>
   </head>
   
   <body>
-    <div id="gridContainer"></div>
-    
     <script>
-      //save datagrids
-      datagrids = [];
       
       //make grid
+      var grid = document.createElement("table");
+          document.body.appendChild(grid);
       var datagrid = [];
       function createGrid(width, height)
       {
-        datagrid = [];
+        datagrid = [];        
+        grid.innerHTML = "";
         
-        var gridContainer = document.getElementById("gridContainer");
-        gridContainer.innerHTML = "";
-        
-        var grid = document.createElement("table");
-            gridContainer.appendChild(grid);
         for (var y = 0; y < height; ++y){
             var row = document.createElement("tr");
                 grid.appendChild(row);
@@ -47,21 +45,22 @@
       }
       createGrid(16, 16);
       
-      //interact
+      //draw, save
       var isMouseDown = false;
-      window.addEventListener("mousedown", function(){isMouseDown = true; });
-      window.addEventListener("mouseup"  , function(){isMouseDown = false;
-                                                      datagrids.push(datagrid);
-                                                      createGrid();
+      
+      var data = document.getElementById("exportBox");
+      grid.addEventListener("mousedown", function(){isMouseDown = true; });
+      grid.addEventListener("mouseup"  , function(){isMouseDown = false;
+                                                      data.innerText += "[" + datagrid + "],\n";
+                                                      createGrid(16, 16);
                                                      });
       function activate(cell){
         if (isMouseDown) { cell.className = 'active';   datagrid[parseInt(cell.id)] = 1; }
-        //else             { cell.className = 'inactive'; datagrid[parseInt(cell.id)] = 0; }
       }
       
-      
     </script>
-    
+    <textarea id="exportBox"></textarea>
+
   </body>
   
 </html>
