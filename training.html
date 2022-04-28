@@ -1,0 +1,45 @@
+<html>
+  
+  <head>
+    <style>
+      td {
+        width: 10px;
+        height: 12px;
+      }
+      
+    </style>
+  </head>
+  
+  <body>
+    
+    <script>
+      
+      //make grid
+      var width = 16;
+      var height = 16;
+      var datagrid = [];
+
+      var grid = document.createElement("table");
+          document.body.appendChild(grid);
+      for (var y = 0; y < height; ++y){
+          var row = document.createElement("tr");
+              grid.appendChild(row);
+          for (var x = 0; x < width; ++x){
+              var cell = document.createElement("td");
+                  datagrid.push(0);
+                  row.appendChild(cell);
+                  cell.id = width * y + x;
+                  cell.value = 0;
+                  cell.setAttribute("onmousedown", "javascript: datagrid[this.id] = 1; this.value = 1;")
+          }
+      }
+      
+      //interact
+      
+      
+      
+    </script>
+    
+  </body>
+  
+</html>
