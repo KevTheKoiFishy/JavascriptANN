@@ -4,13 +4,19 @@ table {
   left: 50%; transform: translate(-50%);
 }
 td {
-  width: 14px;
-  height: 17px;
+  width: 16px;
+  height: 18px;
   background: #ecf0f8;
   border: .1px solid #9037a3;
 }
 td.active {
   background: #eb1b6e;
+}
+
+#exportContainer {
+  position: absolute;
+  left: 50%; top: 300px; transform: translate(-50%);
+  width: 100%;
 }
 
 #exportBox, input, a {
