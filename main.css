@@ -1,0 +1,39 @@
+table {
+  border-collapse: collapse;
+  position: absolute;
+  left: 50%; transform: translate(-50%);
+}
+td {
+  width: 14px;
+  height: 17px;
+  background: #ecf0f8;
+  border: .1px solid #9037a3;
+}
+td.active {
+  background: #eb1b6e;
+}
+
+#exportBox, input, a {
+  margin-top: 10px;
+  width: 100%;
+  height: 200px;
+  overflow: auto;
+
+  background: #ecf0f8;
+  color: #eb1b6e;
+  font-family: "Gulim", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+
+  white-space: nowrap;
+}
+input, a {
+  width: 200px;
+  text-align: center;
+  border: none;
+  padding: 10px;
+  height: auto;
+}
+a {
+  padding: 11px;
+}
