@@ -14,17 +14,17 @@ for (layer = 1; layer < numLayers; ++layer){
     NN[layer][val] = [];
     values[layer][val] = 0;
     for (var input = 0; input < numValues[layer-1]; ++input){
-      NN[layer][val][input] = [Math.random()/numValues[layer-1], Math.random()];
+      NN[layer][val][input] = [Math.random(), Math.random()];
     }
   }
 }
 
 //run
-for (layer = 1; layer < numLayers; ++layer){
-  for (var val = 0; val < numValues[layer]; ++val){
-    for (var input = 0; input < numValues[layer-1]; ++input){
-      if (values[layer][val] > NN[layer][val][input][1]){
+for (layer = 1; layer < numLayers; ++layer)
+  for (var val = 0; val < numValues[layer]; ++val)
+    for (var input = 0; input < numValues[layer-1]; ++input)
+      if (values[layer-1][input] > NN[layer][val][input][1])
         values[layer][val] += (values[layer-1][input] - NN[layer][val][input][1]) * NN[layer][val][input][0];
-} } } }
+
 
 console.log(values);
