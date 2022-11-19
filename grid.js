@@ -21,3 +21,18 @@ function createGrid(width, height)
   }
 }
 createGrid(16, 16);
+
+//draw, save
+var isMouseDown = false;
+
+var data = document.getElementById("exportBox");
+grid.addEventListener("mousedown", function(){isMouseDown = true; });
+grid.addEventListener("mouseup"  , function(){isMouseDown = false;
+                                                document.getElementById("exportBox").innerText += document.getElementById("ID").value + ",[" + datagrid + "],\n";
+                                                document.getElementById("exportButton").setAttribute("href", "data:text/plain," + document.getElementById("exportBox").innerText);
+                                                document.getElementById("exportButton").setAttribute("download", document.getElementById("PJ").value);
+                                                createGrid(16, 16);  
+                                             });
+function activate(cell){
+  if (isMouseDown) { cell.className = 'active';   datagrid[parseInt(cell.id)] = 1; }
+}
