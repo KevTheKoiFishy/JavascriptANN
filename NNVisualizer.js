@@ -13,8 +13,9 @@ var visual = document.createElement("DIV");
                 thisNode.addEventListener("mouseover",
                     function(){
                         altText.style.display = "block";
-                        altText.style.left = window.clientX;
-                        altText.style.top = window.clientY;
+                        altText.style.left = event.clientX;
+                        altText.style.top = event.clientY;
+                        altText.innerText = this.getAttribute("activation")
                     }
                 );
                 thisNode.addEventListener("mouseout",

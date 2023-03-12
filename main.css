@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne+Mono&display=swap');
 
+*{
+    font-family: "Syne Mono", monospace;
+}
+
 table {
   border-collapse: collapse;
   position: relative;
@@ -27,7 +31,6 @@ td.active {
 
   background: #ecf0f8;
   color: #eb1b6e;
-  font-family: "Syne Mono", monospace;
   font-size: 14px;
   font-weight: bold;
   text-align: left;
@@ -53,9 +56,7 @@ a {
   
   position: fixed;
   top: 0; left: 0;
-  
-  width: auto;
-  height: auto;
+  padding: 2px 6px;
   
   border: 2px solid #ecf0f8;
   border-radius: 10px;
