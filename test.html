@@ -14,7 +14,9 @@
     </div>
     
     <script>
+      function handleMouseDown(){isMouseDown = true;}
       function handleMouseUp(){
+        isMouseDown = false;
         //the following actions moved to each grid cell
       /*for (var i = 0; i < gridWidth*gridHeight; ++i){
           NN[0][i].value = datagrid[i];

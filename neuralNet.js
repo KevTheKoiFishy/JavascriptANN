@@ -38,4 +38,9 @@ function updateNN(NN, nodesByLayer){
     }
 }
 
-initNN(NN, nodesByLayer);
+if (localStorage.getItem("NN") == null){
+  initNN(NN, nodesByLayer);
+}
+else {
+  NN = JSON.parse()
+}

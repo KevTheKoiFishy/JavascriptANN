@@ -25,8 +25,8 @@ createGrid(gridWidth, gridHeight);
 
 //draw, save
 var isMouseDown = false;
-grid.addEventListener("mousedown", function(){isMouseDown = true; });
-grid.addEventListener("mouseup"  , function(){isMouseDown = false; handleMouseUp();});
+grid.addEventListener("mousedown", handleMouseDown);
+grid.addEventListener("mouseup"  , handleMouseUp);
 
 function activate(cell){
   if (isMouseDown) {
