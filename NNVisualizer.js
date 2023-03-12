@@ -8,10 +8,8 @@ var visual = document.createElement("DIV");
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             var thisNode = thisLayer.appendChild(document.createElement("DIV"));
                 thisNode.id = "L" + Nlayer + "_N" + Nnode;
-                if (nodesByLayer[Nlayer] < 50){
-                  thisNode.innerText = Nnode;
-                } else {
-                  
-                }
+                //if (nodesByLayer[Nlayer] < 50){
+                //thisNode.innerText = Nnode;
+                
         }
     }
