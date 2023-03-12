@@ -22,7 +22,7 @@
         document.getElementById("exportBox").innerText += document.getElementById("ID").value + ",[" + datagrid + "],\n";
         document.getElementById("exportButton").setAttribute("href", "data:text/plain," + document.getElementById("exportBox").innerText);
         document.getElementById("exportButton").setAttribute("download", document.getElementById("PJ").value);
-        createGrid(width, height);
+        createGrid(gridWidth, gridHeight);
       }
     </script>
     <script src="grid.js"></script>

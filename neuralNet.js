@@ -40,7 +40,8 @@ function updateNN(NN, nodesByLayer){
 
 if (localStorage.getItem("NN") == null){
   initNN(NN, nodesByLayer);
+  localStorage.setItem("NN", JSON.stringify(NN));
 }
 else {
-  NN = JSON.parse()
+  NN = JSON.parse(localStorage.getItem("NN"));
 }
