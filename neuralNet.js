@@ -1,30 +1,41 @@
-var datagrid = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,1,1,1,0,0,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-var numLayers  = 4;
-var numValues = [datagrid.length, 16, 16, 10];
-var NN = [];
-var values = [datagrid];
-
-var layer = 0;
-
-//make
-for (layer = 1; layer < numLayers; ++layer){
-  NN[layer] = [];
-  values[layer] = []
-  for (var val = 0; val < numValues[layer]; ++val){
-    NN[layer][val] = [];
-    values[layer][val] = 0;
-    for (var input = 0; input < numValues[layer-1]; ++input){
-      NN[layer][val][input] = [Math.random(), Math.random()];
+//activation function
+function ReLU(inputs, weights, biases){
+    var output = 0;
+    var maxSum = 2 * inputs.length; // map final sum between 0 and 1 (max sum possible is 0 - 2)
+    for (var Ninput = 0; Ninput < inputs.length; ++Ninput){
+        output += inputs[Ninput].value * weights[Ninput] + biases[Ninput];
     }
-  }
+    if (output < 0) {output = 0;}
+    output /= maxSum;
+    
+    return output;
+};
+
+// init NN
+var NN = [];
+var nodesByLayer = [256, 16, 16, 10];
+function initNN(NN, nodesByLayer){
+    for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
+        NN[Nlayer] = [];
+        for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+            NN[Nlayer][Nnode] = {value: Math.random()};
+            if (Nlayer > 0){
+                NN[Nlayer][Nnode] = {weights: [], biases: [], value: undefined};
+                for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
+                    NN[Nlayer][Nnode].weights[NnodePrev] = Math.random();
+                    NN[Nlayer][Nnode].biases[NnodePrev]  = Math.random();
+                }
+            }
+        }
+    }
 }
 
-//run
-for (layer = 1; layer < numLayers; ++layer)
-  for (var val = 0; val < numValues[layer]; ++val)
-    for (var input = 0; input < numValues[layer-1]; ++input)
-      if (values[layer-1][input] > NN[layer][val][input][1])
-        values[layer][val] += (values[layer-1][input] - NN[layer][val][input][1]) * NN[layer][val][input][0];
+function updateNN(NN, nodesByLayer){
+    for (var Nlayer = 1; Nlayer < nodesByLayer.length; ++Nlayer){
+        for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+                NN[Nlayer][Nnode].value = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].biases);
+        }
+    }
+}
 
-
-console.log(values);
+initNN(NN, nodesByLayer);
