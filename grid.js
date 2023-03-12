@@ -1,8 +1,9 @@
 var gridWidth = 16, gridHeight = 16;
 
 //make grid
+var gridContainer = document.getElementById("gridContainer");
 var grid = document.createElement("table");
-    document.getElementById("gridContainer").appendChild(grid);
+    gridContainer.appendChild(grid);
 var datagrid = [];
 function createGrid(width, height){
     datagrid = [];
