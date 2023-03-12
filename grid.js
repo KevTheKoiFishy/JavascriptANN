@@ -17,7 +17,7 @@ function createGrid(width, height){
                 row.appendChild(cell);
                 cell.id = width * y + x;
                 cell.className = "inactive";
-                cell.setAttribute("onmouseover", "javascript: activate(this);");
+                cell.setAttribute("onmouseover", "javascript: activate(this); displayUpdatedNN();");
         }
     }
 }
