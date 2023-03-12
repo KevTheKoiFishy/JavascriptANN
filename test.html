@@ -36,6 +36,8 @@
     
     <div id="gridContainer" align="center"></div>
     <div id="exportContainer" align="center">
+      <input type="button" id="updateVisualizer" value="Visualizer Off">
+      <input type="button" id="updateConsole" value="Console Off">
       <input type="button" id="CLEAR" value="💥 Clear Drawing 💣">
       <div id="exportBox" contenteditable="true"></div>
     </div>
@@ -62,28 +64,56 @@
         }*/
       }
       
+      var updateConsole = 1; updateVisualizer = 1;
+      var updateVisualizerButton = document.getElementById("updateVisualizer").addEventListener("click",
+          function(){
+              if (updateVisualizer){
+                  updateVisualizer = 0;
+                  updateVisualizerButton.setAttribute("value", "Visualizer On");
+              } else {
+                  updateVisualizer = 1;
+                  updateVisualizerButton.value = "Visualizer Off";
+              }
+          }
+      );
+      var updateConsoleButton = document.getElementById("updateConsole").addEventListener("click",
+          function(){
+              if (updateConsole){
+                  updateConsole = 0;
+                  updateConsoleButton.value = "Console On";
+              } else {
+                  updateConsole = 1;
+                  updateConsoleButton.value = "Console Off";
+              }
+          }
+      );
+      
       function displayUpdatedNN(){
         for (var i = 0; i < gridWidth*gridHeight; ++i){
           NN[0][i].value = datagrid[i];
         }
         updateNN(NN, nodesByLayer);
 
-        //see output layer
-        var outBox = document.getElementById("exportBox");
-        outBox.innerText = "";
-        outBox.innerText += datagrid + "\n";
+        if (updateConsole){
+          //see output layer
+          var outBox = document.getElementById("exportBox");
+          outBox.innerText = "";
+          outBox.innerText += datagrid + "\n";
 
-        for (var i = 0; i < NN[NN.length - 1].length; ++i){
-          var val = NN[NN.length - 1][i].value;
-          //val = Math.round(val * 10000) / 10000; 
-          outBox.innerText += "P(" + i + "): " + val + "\n";
+          for (var i = 0; i < NN[NN.length - 1].length; ++i){
+            var val = NN[NN.length - 1][i].value;
+            //val = Math.round(val * 10000) / 10000; 
+            outBox.innerText += "P(" + i + "): " + val + "\n";
+          }
         }
         
-        for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
-            for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-                var percent = Math.round(NN[Nlayer][Nnode].value*10000)/100;
-                document.getElementById("L"+Nlayer+"_N"+Nnode).setAttribute("style", "background: linear-gradient(0deg, #9037a3 0%, #9037a3 " + percent + "%, #ecf0f8 " + percent + "%, #ecf0f8 100%);");
-            }
+        if (updateVisualizer){
+          for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
+              for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+                  var percent = Math.round(NN[Nlayer][Nnode].value*10000)/100;
+                  document.getElementById("L"+Nlayer+"_N"+Nnode).setAttribute("style", "background: linear-gradient(0deg, #9037a3 0%, #9037a3 " + percent + "%, #ecf0f8 " + percent + "%, #ecf0f8 100%);");
+              }
+          }
         }
         
       }
