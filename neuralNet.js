@@ -13,7 +13,7 @@ function ReLU(inputs, weights, biases){
 
 // init NN
 var NN = [];
-var nodesByLayer = [256, 16, 16, 10];
+var nodesByLayer = [gridWidth*gridHeight, 16, 16, 10];
 function initNN(NN, nodesByLayer){
     for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
         NN[Nlayer] = [];

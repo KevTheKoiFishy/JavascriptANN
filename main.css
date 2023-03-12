@@ -27,9 +27,10 @@ td.active {
 
   background: #ecf0f8;
   color: #eb1b6e;
-  font-family: "Gulim", sans-serif;
+  font-family: monospace, "Gulim", sans-serif;
   font-size: 14px;
   font-weight: bold;
+  text-align: left;
 
   white-space: nowrap;
 }

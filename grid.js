@@ -1,12 +1,11 @@
-var width = 16, height = 16;
+var gridWidth = 16, gridHeight = 16;
 
 //make grid
 var grid = document.createElement("table");
     document.body.appendChild(grid);
 var datagrid = [];
-function createGrid(width, height)
-{
-    datagrid = [];        
+function createGrid(width, height){
+    datagrid = [];
     grid.innerHTML = "";
 
     for (var y = 0; y < height; ++y){
@@ -22,24 +21,20 @@ function createGrid(width, height)
         }
     }
 }
-createGrid(width, height);
+createGrid(gridWidth, gridHeight);
 
 //draw, save
 var isMouseDown = false;
-
-function handleMouseUp(){
-    document.getElementById("exportBox").innerText += document.getElementById("ID").value + ",[" + datagrid + "],\n";
-    document.getElementById("exportButton").setAttribute("href", "data:text/plain," + document.getElementById("exportBox").innerText);
-    document.getElementById("exportButton").setAttribute("download", document.getElementById("PJ").value);
-    createGrid(width, height);
-}
-var data = document.getElementById("exportBox");
 grid.addEventListener("mousedown", function(){isMouseDown = true; });
 grid.addEventListener("mouseup"  , function(){isMouseDown = false; handleMouseUp();});
 
 function activate(cell){
-  if (isMouseDown) { cell.className = 'active';   datagrid[parseInt(cell.id)] = 1; }
+  if (isMouseDown) {
+    cell.className = 'active';
+    datagrid[parseInt(cell.id)] = 1;
+  }
 }
 
 //clear (test.html)
-document.getElementById("CLEAR").addEventListener("click", createGrid(width, height));
+function refreshGrid(){ createGrid(gridWidth, gridHeight) }
+document.getElementById("CLEAR").addEventListener("click", refreshGrid);

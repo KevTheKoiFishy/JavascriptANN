@@ -7,13 +7,24 @@
   </head>
   
   <body>
-    <script src="grid.js"></script>
+    
     <div id="exportContainer" align="center">
       <input id="ID" value="1" placeholder="What character are you drawing?">
       <input id="PJ" value="Numerals" placeholder="Project Title?">
       <a id="exportButton" href="" download>Download as TXT</a>
       <div id="exportBox" contenteditable="true"></div>
     </div>
+    
+    <script>
+      function handleMouseUp(){
+        document.getElementById("exportBox").innerText += document.getElementById("ID").value + ",[" + datagrid + "],\n";
+        document.getElementById("exportButton").setAttribute("href", "data:text/plain," + document.getElementById("exportBox").innerText);
+        document.getElementById("exportButton").setAttribute("download", document.getElementById("PJ").value);
+        createGrid(width, height);
+      }
+    </script>
+    <script src="grid.js"></script>
+    
   </body>
   
 </html>

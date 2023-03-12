@@ -7,12 +7,34 @@
   </head>
   
   <body>
-    <script src="grid.js"></script>
+    
     <div id="exportContainer" align="center">
       <input type="button" id="CLEAR" value="💥 Clear Drawing 💣">
       <div id="exportBox" contenteditable="true"></div>
     </div>
+    
+    <script>
+      function handleMouseUp(){
+        for (var i = 0; i < gridWidth*gridHeight; ++i){
+          NN[0][i].value = datagrid[i];
+        }
+        updateNN(NN, nodesByLayer);
+
+        //see output layer
+        var outBox = document.getElementById("exportBox");
+        outBox.innerText = "";
+        outBox.innerText += datagrid + "\n";
+
+        for (var i = 0; i < NN[NN.length - 1].length; ++i){
+          var val = NN[NN.length - 1][i].value;
+          //val = Math.round(val * 10000) / 10000; 
+          outBox.innerText += "P(" + i + "): " + val + "\n";
+        }
+      }
+    </script>
+    <script src="grid.js"></script>
     <script src="neuralNet.js"></script>
+    
   </body>
   
 </html>
