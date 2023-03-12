@@ -2,8 +2,7 @@
 
 table {
   border-collapse: collapse;
-  position: absolute;
-  left: 50%; transform: translate(-50%);
+  position: relative;
 }
 td {
   width: 16px;
@@ -16,8 +15,7 @@ td.active {
 }
 
 #exportContainer {
-  position: absolute;
-  left: 50%; top: 300px; transform: translate(-50%);
+  position: relative;
   width: 100%;
 }
 

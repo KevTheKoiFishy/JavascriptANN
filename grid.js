@@ -2,7 +2,7 @@ var gridWidth = 16, gridHeight = 16;
 
 //make grid
 var grid = document.createElement("table");
-    document.body.appendChild(grid);
+    document.getElementById("gridContainer").appendChild(grid);
 var datagrid = [];
 function createGrid(width, height){
     datagrid = [];
