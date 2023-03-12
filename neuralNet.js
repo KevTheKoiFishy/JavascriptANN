@@ -33,7 +33,7 @@ function initNN(NN, nodesByLayer){
 function updateNN(NN, nodesByLayer){
     for (var Nlayer = 1; Nlayer < nodesByLayer.length; ++Nlayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-                NN[Nlayer][Nnode].value = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].biases);
+            NN[Nlayer][Nnode].value = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].biases);
         }
     }
 }
