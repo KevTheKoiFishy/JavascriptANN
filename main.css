@@ -14,6 +14,17 @@ td.active {
   background: #eb1b6e;
 }
 
+#gridContainer>div>div{
+  width: 100%;
+  display: flex;
+}
+#gridContainer>div>div>div{
+  width: 14px;
+  height: 50px;
+  line-height: 14px;
+  overflow-wrap: anywhere;
+}
+
 #exportContainer {
   position: relative;
   width: 100%;
