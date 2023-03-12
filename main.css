@@ -46,3 +46,20 @@ input, a {
 a {
   padding: 11px;
 }
+
+#altText {
+  display: none;
+  z-index: 10;
+  
+  position: fixed;
+  top: 0; left: 0;
+  
+  width: auto;
+  height: auto;
+  
+  border: 2px solid #ecf0f8;
+  border-radius: 10px;
+  background: #9037a3;
+  color: #ecf0f8;
+  
+}

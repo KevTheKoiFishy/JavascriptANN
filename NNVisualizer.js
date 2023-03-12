@@ -1,3 +1,5 @@
+var altText = document.getElementById("altText");
+
 var visual = document.createElement("DIV");
     gridContainer.appendChild(visual);
     visual.id = "NNVisual";
@@ -8,8 +10,17 @@ var visual = document.createElement("DIV");
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             var thisNode = thisLayer.appendChild(document.createElement("DIV"));
                 thisNode.id = "L" + Nlayer + "_N" + Nnode;
-                //if (nodesByLayer[Nlayer] < 50){
-                //thisNode.innerText = Nnode;
-                
+                thisNode.addEventListener("mouseover",
+                    function(){
+                        altText.style.display = "block";
+                        altText.style.left = window.clientX;
+                        altText.style.top = window.clientY;
+                    }
+                );
+                thisNode.addEventListener("mouseout",
+                    function(){
+                        altText.style.display = "none";
+                    }
+                );
         }
     }
