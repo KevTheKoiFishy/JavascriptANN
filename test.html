@@ -79,11 +79,10 @@
           outBox.innerText += "P(" + i + "): " + val + "\n";
         }
         
-        function updateNN(NN, nodesByLayer){
-            for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
-                for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-                    NN[Nlayer][Nnode].value;
-                }
+        for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
+            for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+                var percent = Math.round(NN[Nlayer][Nnode].value*10000)/100;
+                document.getElementById("L"+Nlayer+"_N"+Nnode).setAttribute("style", "background: linear-gradient(0deg, #9037a3 0%, #9037a3 " + percent + "%, #ecf0f8 " + percent + "%, #ecf0f8 100%);");
             }
         }
         
