@@ -2,28 +2,40 @@
   
   <head>
     <link rel="icon" href="https://cdn.glitch.global/d36d6510-6d7e-4bbb-994f-367a2d9d8952/93043e43-8611-4f72-9a3c-65d329e68054.image.png?v=1651167449786">
-    <title>Training Data</title>
+    <title>Train NN</title>
     <link rel="stylesheet" href="main.css">
   </head>
   
   <body>
-
+    
     <div id="exportContainer" align="center">
-      <input id="ID" value="1" placeholder="What character are you drawing?">
-      <input id="PJ" value="Numerals" placeholder="Project Title?">
-      <a id="exportButton" href="" download>Download as TXT</a>
+      <input type="button" id="START" value="🧠 Start Training 🔢">
       <div id="exportBox" contenteditable="true"></div>
     </div>
     
-    <script>
-      function handleMouseUp(){
-        document.getElementById("exportBox").innerText += document.getElementById("ID").value + ",[" + datagrid + "],\n";
-        document.getElementById("exportButton").setAttribute("href", "data:text/plain," + document.getElementById("exportBox").innerText);
-        document.getElementById("exportButton").setAttribute("download", document.getElementById("PJ").value);
-        createGrid(width, height);
+    
+    <script>      
+      function displayUpdatedNN(){
+        for (var i = 0; i < gridWidth*gridHeight; ++i){
+          NN[0][i].value = datagrid[i];
+        }
+        updateNN(NN, nodesByLayer);
+
+        //see output layer
+        var outBox = document.getElementById("exportBox");
+        outBox.innerText = "";
+        outBox.innerText += datagrid + "\n";
+
+        for (var i = 0; i < NN[NN.length - 1].length; ++i){
+          var val = NN[NN.length - 1][i].value;
+          //val = Math.round(val * 10000) / 10000; 
+          outBox.innerText += "P(" + i + "): " + val + "\n";
+        }
       }
     </script>
     <script src="grid.js"></script>
+    <script src="neuralNet.js"></script>
+    <script src="train.js"></script>
     
   </body>
   
