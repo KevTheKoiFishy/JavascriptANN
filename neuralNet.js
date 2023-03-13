@@ -1,12 +1,13 @@
 //activation function
-function ReLU(inputs, weights, biases){
+function ReLU(inputs, weights, bias){
     var output = 0;
-    var maxSum = 2 * inputs.length; // map final sum between 0 and 1 (max sum possible is 0 - 2)
+    var maxSum = inputs.length; // map final sum between 0 and 1 (max sum possible is 0 - 2)
     for (var Ninput = 0; Ninput < inputs.length; ++Ninput){
-        output += inputs[Ninput].value * weights[Ninput] + biases[Ninput];
+        output += inputs[Ninput].value * weights[Ninput];
     }
     if (output < 0) {output = 0;}
     output /= maxSum;
+    output += bias;
     
     return output;
 };
@@ -20,10 +21,9 @@ function initNN(NN, nodesByLayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NN[Nlayer][Nnode] = {value: Math.random()};
             if (Nlayer > 0){
-                NN[Nlayer][Nnode] = {weights: [], biases: [], value: undefined};
+                NN[Nlayer][Nnode] = {weights: [], bias: Math.random()/2, value: undefined};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
                     NN[Nlayer][Nnode].weights[NnodePrev] = Math.random();
-                    NN[Nlayer][Nnode].biases[NnodePrev]  = Math.random();
                 }
             }
         }
@@ -33,7 +33,7 @@ function initNN(NN, nodesByLayer){
 function updateNN(NN, nodesByLayer){
     for (var Nlayer = 1; Nlayer < nodesByLayer.length; ++Nlayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-            NN[Nlayer][Nnode].value = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].biases);
+            NN[Nlayer][Nnode].value = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].bias);
         }
     }
 }
