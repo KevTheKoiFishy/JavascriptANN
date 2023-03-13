@@ -44,7 +44,7 @@ function cost(outputs, targets){
 
 function backpropagate(){
   //compute average cost
-  var Ndatum = 0;
+  Ndatum = 0;
   var trainInterval = setInterval( () => {
       if (Ndatum >= trainingData.length){
         clearInterval(trainInterval);

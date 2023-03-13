@@ -41,6 +41,7 @@ function refreshGrid(){ createGrid(gridWidth, gridHeight) }
 document.getElementById("CLEAR").addEventListener("click", refreshGrid);
 
 //handle console and visuals
+var Ndatum, costValue, averageCostValue;
 function updateConsoleNow(){
   //see output layer
   var outBox = document.getElementById("exportBox");
@@ -48,10 +49,10 @@ function updateConsoleNow(){
   outBox.innerText += datagrid + "\n";
 
   if (Ndatum != undefined)
-    outBox.innerText += "Cost____: " + costValue + "\n";
+    outBox.innerText += "Sample No." + (Ndatum/2 + 1) + "\n";
   
   if (costValue != undefined)
-    outBox.innerText += "Cost____: " + costValue + "\n";
+    outBox.innerText += "Cost: " + costValue + "\n";
   
   if (averageCostValue != undefined)
     outBox.innerText += "Avg Cost: " + (averageCostValue/Ndatum*2) + "\n";
