@@ -1,5 +1,5 @@
 //make gltich.com compiler stop screaming
-var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer, datagrid;
+var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer, datagrid, displayUpdatedNN;
 var displayGrid = true;
 
 //Scramble training data
@@ -44,10 +44,11 @@ function backpropagate(){
   for (var Ndatum = 0; Ndatum < 1; Ndatum += 2){
     for (var i = 0; i < gridWidth*gridHeight; ++i){
       NN[0][i].value = trainingData[Ndatum + 1][i];
-      if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "");}
+      if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
     }
     updateNN(NN, nodesByLayer);
+    displayUpdatedNN();
   }
 }
 
-document.getElementById("TRAIN").setAttribute("click", backpropagate)
+document.getElementById("TRAIN").addEventListener("click", backpropagate);

@@ -39,3 +39,34 @@ function activate(cell){
 //clear (test.html)
 function refreshGrid(){ createGrid(gridWidth, gridHeight) }
 document.getElementById("CLEAR").addEventListener("click", refreshGrid);
+
+//handle console and visuals
+function displayUpdatedNN(){
+  for (var i = 0; i < gridWidth*gridHeight; ++i)
+    NN[0][i].value = datagrid[i];
+  updateNN(NN, nodesByLayer);
+
+  if (updateConsole){
+      //see output layer
+      var outBox = document.getElementById("exportBox");
+      outBox.innerText = "";
+      outBox.innerText += datagrid + "\n";
+
+      for (var i = 0; i < NN[NN.length - 1].length; ++i){
+        var val = NN[NN.length - 1][i].value;
+        //val = Math.round(val * 10000) / 10000; 
+        outBox.innerText += "P(" + i + "): " + val + "\n";
+      }
+  }
+
+  if (updateVisualizer){
+      for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
+          for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+              var percent = Math.round(NN[Nlayer][Nnode].value*10000)/100;
+              document.getElementById("L"+Nlayer+"_N"+Nnode).setAttribute("style", "background: linear-gradient(0deg, #9037a3 0%, #9037a3 " + percent + "%, #ecf0f8 " + percent + "%, #ecf0f8 100%);");
+              document.getElementById("L"+Nlayer+"_N"+Nnode).setAttribute("activation", NN[Nlayer][Nnode].value);
+          }
+      }
+  }
+
+}

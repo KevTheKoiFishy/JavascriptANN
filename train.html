@@ -4,34 +4,47 @@
     <link rel="icon" href="https://cdn.glitch.global/d36d6510-6d7e-4bbb-994f-367a2d9d8952/93043e43-8611-4f72-9a3c-65d329e68054.image.png?v=1651167449786">
     <title>Train NN</title>
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="NNVisualizer.css">
   </head>
   
   <body>
-    
     <div id="gridContainer" align="center"></div>
     <div id="exportContainer" align="center">
+      <input type="button" id="updateVisualizer" value="Visualizer On">
+      <input type="button" id="updateConsole" value="Console On">
       <input type="button" id="TRAIN" value="🧠 Start Training 🔢">
       <div id="exportBox" contenteditable="true"></div>
     </div>
     
+    <div id="altText"></div>
+      
     <script>
-      function displayUpdatedNN(){
-        for (var i = 0; i < gridWidth*gridHeight; ++i){
-          NN[0][i].value = datagrid[i];
-        }
-        updateNN(NN, nodesByLayer);
-
-        //see output layer
-        var outBox = document.getElementById("exportBox");
-        outBox.innerText = "";
-        outBox.innerText += datagrid + "\n";
-
-        for (var i = 0; i < NN[NN.length - 1].length; ++i){
-          var val = NN[NN.length - 1][i].value;
-          //val = Math.round(val * 10000) / 10000; 
-          outBox.innerText += "P(" + i + "): " + val + "\n";
-        }
-      }
+      function handleMouseDown(){isMouseDown = true; }
+      function handleMouseUp()  {isMouseDown = false;}
+      
+      var updateConsole = 1; updateVisualizer = 1;
+      document.getElementById("updateVisualizer").addEventListener("click",
+          function(){
+              if (updateVisualizer){
+                  updateVisualizer = 0;
+                  this.setAttribute("value", "Visualizer Off");
+              } else {
+                  updateVisualizer = 1;
+                  this.setAttribute("value", "Visualizer On");
+              }
+          }
+      );
+      document.getElementById("updateConsole").addEventListener("click",
+          function(){
+              if (updateConsole){
+                  updateConsole = 0;
+                  this.setAttribute("value", "Console Off");
+              } else {
+                  updateConsole = 1;
+                  this.setAttribute("value", "Console On");
+              }
+          }
+      );
     </script>
     <script src="grid.js"></script>
     <script src="neuralNet.js"></script>
