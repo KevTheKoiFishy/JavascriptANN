@@ -43,8 +43,8 @@ function backpropagate(){
   //compute average cost
   for (var Ndatum = 0; Ndatum < 1; Ndatum += 2){
     for (var i = 0; i < gridWidth*gridHeight; ++i){
-      NN[0][i].value = datagrid[i];
-      if (displayGrid){document.getElementById(i).className = (datagrid[i]) ? "active" : "";}
+      NN[0][i].value = trainingData[Ndatum + 1][i];
+      if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "");}
     }
     updateNN(NN, nodesByLayer);
   }
