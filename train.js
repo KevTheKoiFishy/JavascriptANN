@@ -1,7 +1,22 @@
 //make gltich.com compiler stop screaming
 var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer, datagrid, displayGrid;
 
-//1 - convert output value into output vector
+//Scramble training data
+var indexesNotPicked = [];
+    for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2)
+    indexesNotPicked.push(Ndatum);
+var scrambledTrainingData = [];
+    for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
+      var indexOf_indexesNotPicked = Math.floor(Math.random() * indexesNotPicked.length);
+      var indexToPick = indexesNotPicked[indexOf_indexesNotPicked];
+      scrambledTrainingData.push(trainingData[indexToPick    ]);
+      scrambledTrainingData.push(trainingData[indexToPick + 1]);
+      indexesNotPicked.splice(indexOf_indexesNotPicked, 1);
+    }
+trainingData = scrambledTrainingData;
+scrambledTrainingData = undefined; // save RAM
+
+//Convert output value into output vector
 // 1 -> [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
 for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
   var vectorOut = [];
@@ -10,19 +25,6 @@ for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
   }
   trainingData[Ndatum] = vectorOut;
 }
-
-//2 - scramble training data
-var indexesNotPicked = [];
-    for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2)
-    indexesNotPicked.push(Ndatum);
-var tempTrainingData = [];
-    for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
-      var indexOf_indexesNotPicked = Math.floor(Math.random() * indexesNotPicked.length);
-      var indexToPick = indexesNotPicked[indexOf_indexesNotPicked];
-      tempTrainingData.push(trainingData[indexToPick    ]);
-      tempTrainingData.push(trainingData[indexToPick + 1]);
-      indexToPick.splice(indexOf_indexesNotPicked, 1);
-    }
 
 //backpropagate
 /*
