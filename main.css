@@ -7,6 +7,7 @@
 table {
   border-collapse: collapse;
   position: relative;
+  width: 300px; height: 300px;
 }
 td {
   width: 13px;
