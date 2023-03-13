@@ -22,4 +22,9 @@ function cost(outputs, targets){
 
 function backpropagate(){
   
+  for (var i = 0; i < gridWidth*gridHeight; ++i){
+    NN[0][i].value = datagrid[i];
+    if (displayGrid){document.getElementById(i).className += "active";}
+  }
+  updateNN(NN, nodesByLayer);
 }
