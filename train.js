@@ -31,7 +31,7 @@ for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
 /*
   * Derivative of cost with respect to 
 */
-var costValue;
+var costValue, averageCostValue;
 function cost(outputs, targets){
   var SSE = 0; //sum of squared errors
   for (var Noutput = 0; Noutput < outputs.length; ++Noutput){
@@ -42,16 +42,28 @@ function cost(outputs, targets){
 
 function backpropagate(){
   //compute average cost
-  for (var Ndatum = 0; Ndatum < 1; Ndatum += 2){
-    for (var i = 0; i < gridWidth*gridHeight; ++i){
-      NN[0][i].value = trainingData[Ndatum + 1][i];
-      if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
-    }
-    updateNN(NN, nodesByLayer);
-    costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
-    
-    displayUpdatedNN();
-  }
+  var Ndatum = 0;
+  var trainInterval = setInterval( () => {
+      if (Ndatum >= trainingData.length){
+        clearInterval(trainInterval);
+        averageCostValue /= trainingData.length / 2;
+      }
+      else {
+        for (var i = 0; i < gridWidth*gridHeight; ++i){
+          NN[0][i].value = trainingData[Ndatum + 1][i];
+          if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
+        }
+        updateNN(NN, nodesByLayer);
+
+        costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
+        averageCostValue += costValue;
+
+        displayUpdatedNN();
+        
+        Ndatum += 2;
+      }
+
+  }, 1);
 }
 
 document.getElementById("TRAIN").addEventListener("click", backpropagate);

@@ -41,25 +41,15 @@ function refreshGrid(){ createGrid(gridWidth, gridHeight) }
 document.getElementById("CLEAR").addEventListener("click", refreshGrid);
 
 //handle console and visuals
+function 
+
 function displayUpdatedNN(){
   for (var i = 0; i < gridWidth*gridHeight; ++i)
     NN[0][i].value = datagrid[i];
   updateNN(NN, nodesByLayer);
 
   if (updateConsole){
-      //see output layer
-      var outBox = document.getElementById("exportBox");
-      outBox.innerText = "";
-      outBox.innerText += datagrid + "\n";
-    
-      if (costValue != undefined)
-        outBox.innerText += "Cost: " + costValue + "\n";
-
-      for (var i = 0; i < NN[NN.length - 1].length; ++i){
-        var val = NN[NN.length - 1][i].value;
-        //val = Math.round(val * 10000) / 10000; 
-        outBox.innerText += "P(" + i + "): " + val + "\n";
-      }
+      
     
   }
 
