@@ -31,10 +31,11 @@ for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
 /*
   * Derivative of cost with respect to 
 */
+var costValue;
 function cost(outputs, targets){
   var SSE = 0; //sum of squared errors
   for (var Noutput = 0; Noutput < outputs.length; ++Noutput){
-    SSE += (outputs[Noutput] - targets[Noutput])**2;
+    SSE += (outputs[Noutput].value - targets[Noutput])**2;
   }
   return SSE/outputs.length; //return average SSError
 }
@@ -47,6 +48,8 @@ function backpropagate(){
       if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
     }
     updateNN(NN, nodesByLayer);
+    costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
+    
     displayUpdatedNN();
   }
 }
