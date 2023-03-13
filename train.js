@@ -1,5 +1,6 @@
 //make gltich.com compiler stop screaming
-var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer, datagrid, displayGrid;
+var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer, datagrid;
+var displayGrid = true;
 
 //Scramble training data
 var indexesNotPicked = [];
@@ -28,7 +29,7 @@ for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
 
 //backpropagate
 /*
-  * Derivative of cost with resepct to 
+  * Derivative of cost with respect to 
 */
 function cost(outputs, targets){
   var SSE = 0; //sum of squared errors
@@ -39,13 +40,14 @@ function cost(outputs, targets){
 }
 
 function backpropagate(){
-  for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
-    
+  //compute average cost
+  for (var Ndatum = 0; Ndatum < 1; Ndatum += 2){
+    for (var i = 0; i < gridWidth*gridHeight; ++i){
+      NN[0][i].value = datagrid[i];
+      if (displayGrid){document.getElementById(i).className = (datagrid[i]) ? "active" : "";}
+    }
+    updateNN(NN, nodesByLayer);
   }
-  
-  for (var i = 0; i < gridWidth*gridHeight; ++i){
-    NN[0][i].value = datagrid[i];
-    if (displayGrid){document.getElementById(i).className = (datagrid[i]) ? "active" : "";}
-  }
-  updateNN(NN, nodesByLayer);
 }
+
+document.getElementById("TRAIN").setAttribute("click", backpropagate)
