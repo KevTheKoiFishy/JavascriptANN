@@ -8,7 +8,19 @@ for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
   trainingData[Ndatum] = vectorOut;
 }
 
-//2 backpropagate
+//2 - scramble training data
+var indexesNotPicked = [];
+    for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2)
+    indexesNotPicked.push(Ndatum);
+var tempTrainingData = [];
+    for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
+      var indexToPick = indexesNotPicked[Math.floor(Math.random() * indexesNotPicked.length)];
+      tempTrainingData.push(trainingData[indexToPick    ]);
+      tempTrainingData.push(trainingData[indexToPick + 1]);
+      
+    }
+
+//backpropagate
 /*
   * Derivative of cost with resepct to 
 */
@@ -21,10 +33,10 @@ function cost(outputs, targets){
 }
 
 function backpropagate(){
-  
+  for (var trainingData = 0)
   for (var i = 0; i < gridWidth*gridHeight; ++i){
     NN[0][i].value = datagrid[i];
-    if (displayGrid){document.getElementById(i).className += "active";}
+    if (displayGrid){document.getElementById(i).className = (datagrid[i]) ? "active" : "";}
   }
   updateNN(NN, nodesByLayer);
 }
