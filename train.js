@@ -1,3 +1,6 @@
+//make gltich.com compiler stop screaming
+var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer, datagrid, displayGrid;
+
 //1 - convert output value into output vector
 // 1 -> [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
 for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
@@ -14,10 +17,11 @@ var indexesNotPicked = [];
     indexesNotPicked.push(Ndatum);
 var tempTrainingData = [];
     for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
-      var indexToPick = indexesNotPicked[Math.floor(Math.random() * indexesNotPicked.length)];
+      var indexOf_indexesNotPicked = Math.floor(Math.random() * indexesNotPicked.length);
+      var indexToPick = indexesNotPicked[indexOf_indexesNotPicked];
       tempTrainingData.push(trainingData[indexToPick    ]);
       tempTrainingData.push(trainingData[indexToPick + 1]);
-      
+      indexToPick.splice(indexOf_indexesNotPicked, 1);
     }
 
 //backpropagate
@@ -33,7 +37,10 @@ function cost(outputs, targets){
 }
 
 function backpropagate(){
-  for (var trainingData = 0)
+  for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
+    
+  }
+  
   for (var i = 0; i < gridWidth*gridHeight; ++i){
     NN[0][i].value = datagrid[i];
     if (displayGrid){document.getElementById(i).className = (datagrid[i]) ? "active" : "";}
