@@ -28,19 +28,3 @@ var visual = document.createElement("DIV");
                 );
         }
     }
-
-
-//1 - convert output value into output vector
-// 1 -> [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
-  var vectorOut = [];
-  for (var Nnumeral = 0; Nnumeral < 10; ++Nnumeral){
-    vectorOut.push(Nnumeral == trainingData[Ndatum]);
-  }
-  trainingData[Ndatum] = vectorOut;
-}
-
-//2 backpropagate
-function backpropagate(){
-  
-}

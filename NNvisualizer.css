@@ -1,0 +1,20 @@
+#gridContainer{
+  display: flex;
+}
+#gridContainer>div{
+  margin-left: 10px;
+  width: calc(100% - 310px);
+  height: 300px;
+  overflow: auto;
+}
+#gridContainer>div>div{
+  display: flex;
+}
+#gridContainer>div>div>div{
+  margin: 30px 0.5px;
+  border: 0.1px solid #9037a3;
+  width: 15px;
+  height: 15px;
+  background: #ecf0f8;
+  border-radius: 4px;
+}

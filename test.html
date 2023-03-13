@@ -4,28 +4,7 @@
     <link rel="icon" href="https://cdn.glitch.global/d36d6510-6d7e-4bbb-994f-367a2d9d8952/93043e43-8611-4f72-9a3c-65d329e68054.image.png?v=1651167449786">
     <title>NN Tester</title>
     <link rel="stylesheet" href="main.css">
-    <style>
-      #gridContainer{
-        display: flex;
-      }
-      #gridContainer>div{
-        margin-left: 10px;
-        width: calc(100% - 310px);
-        height: 300px;
-        overflow: auto;
-      }
-      #gridContainer>div>div{
-        display: flex;
-      }
-      #gridContainer>div>div>div{
-        margin: 30px 0.5px;
-        border: 0.1px solid #9037a3;
-        width: 15px;
-        height: 15px;
-        background: #ecf0f8;
-        border-radius: 4px;
-      }
-    </style>
+    <link rel="stylesheet" href="NNvisualizer.css">
   </head>
   
   <body>
@@ -41,26 +20,8 @@
     <div id="altText"></div>
       
     <script>
-      function handleMouseDown(){isMouseDown = true;}
-      function handleMouseUp(){
-        isMouseDown = false;
-        //the following actions moved to each grid cell
-      /*for (var i = 0; i < gridWidth*gridHeight; ++i){
-          NN[0][i].value = datagrid[i];
-        }
-        updateNN(NN, nodesByLayer);
-
-        //see output layer
-        var outBox = document.getElementById("exportBox");
-        outBox.innerText = "";
-        outBox.innerText += datagrid + "\n";
-
-        for (var i = 0; i < NN[NN.length - 1].length; ++i){
-          var val = NN[NN.length - 1][i].value;
-          //val = Math.round(val * 10000) / 10000; 
-          outBox.innerText += "P(" + i + "): " + val + "\n";
-        }*/
-      }
+      function handleMouseDown(){isMouseDown = true; }
+      function handleMouseUp()  {isMouseDown = false;}
       
       var updateConsole = 1; updateVisualizer = 1;
       document.getElementById("updateVisualizer").addEventListener("click",
