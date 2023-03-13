@@ -1,5 +1,7 @@
 //make gltich.com compiler stop screaming
-var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer, datagrid, displayUpdatedNN;
+var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer,
+    datagrid, displayUpdatedNN, updateConsole, updateConsoleNow,
+    updateVisualizer, updateVisualizerNow;
 var displayGrid = true;
 
 //Scramble training data
@@ -31,7 +33,7 @@ for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
 /*
   * Derivative of cost with respect to 
 */
-var costValue, averageCostValue;
+var costValue = 0, averageCostValue = 0;
 function cost(outputs, targets){
   var SSE = 0; //sum of squared errors
   for (var Noutput = 0; Noutput < outputs.length; ++Noutput){
@@ -57,8 +59,9 @@ function backpropagate(){
 
         costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
         averageCostValue += costValue;
-
-        displayUpdatedNN();
+        
+        if (updateConsole)      updateConsoleNow();
+        if (updateVisualizer)   updateVisualizerNow();
         
         Ndatum += 2;
       }
