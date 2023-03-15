@@ -10,7 +10,6 @@ function ReLU(inputs, weights, bias){
     Z /= maxSum;
     //Z += bias;
     if (Z < bias) {output = 0.2 * Z;} else {output = Z - 0.8 * bias;}
-    
     return [Z, output];
 };
 
@@ -23,7 +22,7 @@ function initNN(NN, nodesByLayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NN[Nlayer][Nnode] = {value: Math.random()};
             if (Nlayer > 0){
-                NN[Nlayer][Nnode] = {weights: [], bias: Math.random()/2, Z: undefined, value: undefined};
+                NN[Nlayer][Nnode] = {weights: [], bias: Math.random(), Z: undefined, value: undefined};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
                     NN[Nlayer][Nnode].weights[NnodePrev] = Math.random();
                 }
