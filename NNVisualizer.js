@@ -18,7 +18,7 @@ var visual = document.createElement("DIV");
                         altText.style.display = "block";
                         altText.style.left = event.clientX;
                         altText.style.top = event.clientY;
-                        altText.innerText = this.getAttribute("activation")
+                        altText.innerText = this.getAttribute("activation");
                     }
                 );
                 thisNode.addEventListener("mouseout",

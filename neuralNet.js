@@ -36,7 +36,14 @@ function initNN(){
         }
     }
 }
-initNN();
+
+
+if (localStorage.getItem("NN")) {
+  NN = JSON.parse(localStorage.getItem("NN"));
+} else {
+  initNN();
+  localStorage.setItem("NN", JSON.stringify(NN));
+}
 
 function updateNN(inputLayer){
     //load first layer
@@ -156,4 +163,6 @@ function backPropagate(cycles, batchSize, dX){
             
         }
     }
+  
+  localStorage.setItem("NN", JSON.stringify(NN));
 }

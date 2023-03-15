@@ -41,7 +41,7 @@ function showCost(){
         averageCostValue /= trainingData.length / 2;
       }
       else {
-        for (var i = 0; i < gridWidth*gridHeight; ++i){
+        for (var i = 0; i < nodesByLayer[0]; ++i){
           NN[0][i].value = trainingData[Ndatum + 1][i];
           if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
         }

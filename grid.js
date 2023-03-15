@@ -73,9 +73,7 @@ function updateVisualizerNow(){
   }
 }
 function displayUpdatedNN(){
-  for (var i = 0; i < gridWidth*gridHeight; ++i)
-    NN[0][i].value = datagrid[i];
-  updateNN(NN, nodesByLayer);
+  updateNN(datagrid);
 
   if (updateConsole)      updateConsoleNow();
   if (updateVisualizer)   updateVisualizerNow();
