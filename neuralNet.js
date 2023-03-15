@@ -9,7 +9,7 @@ function ReLU(inputs, weights, bias){
     }
     Z /= maxSum;
     //Z += bias;
-    if (Z < bias) {output = bias + 0.2*(Z-bias);} else {output = Z;}
+    if (Z < bias) {output = 0.2 * Z;} else {output = Z - 0.8 * bias;}
     
     return [Z, output];
 };
