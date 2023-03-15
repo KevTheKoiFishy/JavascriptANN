@@ -97,7 +97,7 @@ function dCost_dReLU (out, target) { return 2 * (out - target);   }
 function dReLU_dZ    (Z, bias)     { return (Z > bias) ? 1 : 0.2; }
 // function dValue  (weight)          { return weight;               }
 // function dWeight (PrevLayerValue)  { return PrevLayerValue;       }
-function dReLU_dBias (Z, bias)     { return (Z > bias) ? 1 : 0.2;   }
+function dReLU_dBias (Z, bias)     { return (Z > bias) ? 1 : 0;   }
 function updateNNg(inputLayer, targetOutput){
     initNNg();
     updateNN(inputLayer);
