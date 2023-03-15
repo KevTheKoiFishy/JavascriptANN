@@ -28,7 +28,7 @@ function initNN(){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NN[Nlayer][Nnode] = {value: 0};
             if (Nlayer > 0){
-                NN[Nlayer][Nnode] = {weights: [], bias: 0, Z: 0, value: 0};
+                NN[Nlayer][Nnode] = {weights: [], bias: 0.2, Z: 0, value: 0};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
                     NN[Nlayer][Nnode].weights[NnodePrev] = 0.5;
                 }
@@ -97,7 +97,7 @@ function dCost_dReLU (out, target) { return 2 * (out - target);   }
 function dReLU_dZ    (Z, bias)     { return (Z > bias) ? 1 : 0.2; }
 // function dValue  (weight)          { return weight;               }
 // function dWeight (PrevLayerValue)  { return PrevLayerValue;       }
-function dReLU_dBias (Z, bias)     { return (Z > bias) ? 1 : 0.2;  }
+function dReLU_dBias (Z, bias)     { return (Z > bias) ? 1 : 0;   }
 function updateNNg(inputLayer, targetOutput){
     initNNg();
     updateNN(inputLayer);
