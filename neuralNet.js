@@ -1,15 +1,17 @@
-//activation function
+var gridWidth, gridHeight;
+
+//activation function: leaky ReLU
 function ReLU(inputs, weights, bias){
-    var output = 0;
+    var Z = 0, output = 0;
     var maxSum = inputs.length; // map final sum between 0 and 1 (max sum possible is 0 - 2)
     for (var Ninput = 0; Ninput < inputs.length; ++Ninput){
-        output += inputs[Ninput].value * weights[Ninput];
+        Z += inputs[Ninput].value * weights[Ninput];
     }
-    if (output < 0) {output = 0;}
-    output /= maxSum;
-    output += bias;
+    Z /= maxSum;
+    //Z += bias;
+    if (Z < bias) {output = bias + 0.2*(Z-bias);} else {output = bias + (Z;}
     
-    return output;
+    return [Z, output];
 };
 
 // init NN
@@ -21,7 +23,7 @@ function initNN(NN, nodesByLayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NN[Nlayer][Nnode] = {value: Math.random()};
             if (Nlayer > 0){
-                NN[Nlayer][Nnode] = {weights: [], bias: Math.random()/2, value: undefined};
+                NN[Nlayer][Nnode] = {weights: [], bias: Math.random()/2, Z: undefined, value: undefined};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
                     NN[Nlayer][Nnode].weights[NnodePrev] = Math.random();
                 }
@@ -33,11 +35,14 @@ function initNN(NN, nodesByLayer){
 function updateNN(NN, nodesByLayer){
     for (var Nlayer = 1; Nlayer < nodesByLayer.length; ++Nlayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-            NN[Nlayer][Nnode].value = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].bias);
+            var ReLUOut = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].bias);
+            NN[Nlayer][Nnode].Z     = ReLUOut[0]
+            NN[Nlayer][Nnode].value = ReLUOut[1];
         }
     }
 }
 
+//localStorage.clearItem("NN");
 if (localStorage.getItem("NN") == null){
   initNN(NN, nodesByLayer);
   localStorage.setItem("NN", JSON.stringify(NN));
