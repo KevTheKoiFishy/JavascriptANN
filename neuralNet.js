@@ -5,7 +5,7 @@ function ReLU(prevLayer, weights, bias){
     for (var Ninput = 0; Ninput < prevLayer.length; ++Ninput){
         Z += prevLayer[Ninput].value * weights[Ninput];
     }
-    Z /= maxSum;
+    Z /= maxSum/2;
     //Z += bias;
     if (Z < bias) {output = 0.2 * Z;} else {output = Z - 0.8 * bias;}
     return [Z, output];
@@ -28,9 +28,9 @@ function initNN(){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NN[Nlayer][Nnode] = {value: 0};
             if (Nlayer > 0){
-                NN[Nlayer][Nnode] = {weights: [], bias: 0.2, Z: 0, value: 0};
+                NN[Nlayer][Nnode] = {weights: [], bias: 0.01, Z: 0, value: 0};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
-                    NN[Nlayer][Nnode].weights[NnodePrev] = 0.5;
+                    NN[Nlayer][Nnode].weights[NnodePrev] = Math.random() - 0.1;
                 }
             }
         }
@@ -97,7 +97,7 @@ function dCost_dReLU (out, target) { return 2 * (out - target);   }
 function dReLU_dZ    (Z, bias)     { return (Z > bias) ? 1 : 0.2; }
 // function dValue  (weight)          { return weight;               }
 // function dWeight (PrevLayerValue)  { return PrevLayerValue;       }
-function dReLU_dBias (Z, bias)     { return (Z > bias) ? 1 : 0;   }
+function dReLU_dBias (Z, bias)     { return (Z > bias) ? -1 : 0;  }
 function updateNNg(inputLayer, targetOutput){
     initNNg();
     updateNN(inputLayer);
@@ -154,9 +154,9 @@ function backPropagate(cycles, batchSize, dX){
             //add changesThisBatch to NN
             for (var Nlayer = 1; Nlayer < nodesByLayer.length; ++Nlayer){
                 for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-                    NN[Nlayer][Nnode].bias += dX * changesThisBatch[Nlayer][Nnode].dBias;
+                    NN[Nlayer][Nnode].bias -= dX * changesThisBatch[Nlayer][Nnode].dBias;
                     for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
-                        NN[Nlayer][Nnode].weights[NnodePrev] += dX * changesThisBatch[Nlayer][Nnode].dWeights[NnodePrev];
+                        NN[Nlayer][Nnode].weights[NnodePrev] -= dX * changesThisBatch[Nlayer][Nnode].dWeights[NnodePrev];
                     }
                 }
             }
