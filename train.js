@@ -1,7 +1,7 @@
 //make gltich.com compiler stop screaming
 var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer,
     datagrid, displayUpdatedNN, updateConsole, updateConsoleNow,
-    updateVisualizer, updateVisualizerNow;
+    updateVisualizer, updateVisualizerNow, cost;
 var displayGrid = true;
 
 //Scramble training data
@@ -31,15 +31,8 @@ for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
 
 //Cost Function
 var costValue = 0, averageCostValue = 0;
-function cost(outputs, targets){
-  var SSE = 0; //sum of squared errors
-  for (var Noutput = 0; Noutput < outputs.length; ++Noutput){
-    SSE += (outputs[Noutput].value - targets[Noutput])**2;
-  }
-  return SSE/outputs.length; //return average SSError
-}
 
-function backpropagate(){
+function showCost(){
   //compute average cost
   Ndatum = 0;
   var trainInterval = setInterval( () => {
@@ -66,4 +59,4 @@ function backpropagate(){
   }, 1);
 }
 
-document.getElementById("TRAIN").addEventListener("click", backpropagate);
+document.getElementById("TRAIN").addEventListener("click", showCost);
