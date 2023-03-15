@@ -29,10 +29,7 @@ for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
   trainingData[Ndatum] = vectorOut;
 }
 
-//backpropagate
-/*
-  * Derivative of cost with respect to 
-*/
+//Cost Function
 var costValue = 0, averageCostValue = 0;
 function cost(outputs, targets){
   var SSE = 0; //sum of squared errors
