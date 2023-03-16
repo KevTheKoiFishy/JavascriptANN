@@ -127,13 +127,13 @@ function updateNNg(inputLayer, targetOutput){
 //compute gradient & adjust function for each batch of training data
 function backPropagate(cycles, batchSize, dX){
     for (var Ncycle = 0; Ncycle < cycles; ++Ncycle){
+        console.log(Ncycle);
         for (var Nbatch = 0; Nbatch < trainingData.length/(2*batchSize); ++Nbatch){
             
             initNNg();
             var changesThisBatch = NNg;
             
             for (var Ndatum = Nbatch * 2*batchSize; Ndatum < (Nbatch + 1) * 2*batchSize; Ndatum += 2){
-                console.log(Ncycle + " | " + Nbatch + "." + Ndatum);
                 updateNNg(trainingData[Ndatum+1], trainingData[Ndatum]);
     
                 //add 1/batchSize * NNg to changesThisBatch
