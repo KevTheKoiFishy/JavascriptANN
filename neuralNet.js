@@ -5,7 +5,7 @@ function ReLU(prevLayer, weights, bias){
     for (var Ninput = 0; Ninput < prevLayer.length; ++Ninput){
         Z += prevLayer[Ninput].value * weights[Ninput];
     }
-    Z /= maxSum;
+    //Z /= maxSum;
     //Z += bias;
     if (Z < bias) {output = 0.2 * Z;} else {output = 2*Z - 1.8 * bias;}
     return [Z, output];
@@ -30,7 +30,7 @@ function initNN(){
             if (Nlayer > 0){
                 NN[Nlayer][Nnode] = {weights: [], bias: 0, Z: 0, value: 0};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
-                    NN[Nlayer][Nnode].weights[NnodePrev] = Math.random() - 0.1;
+                    NN[Nlayer][Nnode].weights[NnodePrev] = Math.random()/NN[Nlayer-1].length;
                 }
             }
         }
@@ -162,7 +162,7 @@ function backPropagate(cycles, batchSize, dX){
             }
             
         }
-        dX *= 0.99;
+        //dX *= 0.99;
     }
   
   localStorage.setItem("NN", JSON.stringify(NN));
