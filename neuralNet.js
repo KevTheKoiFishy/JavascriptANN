@@ -7,7 +7,7 @@ function ReLU(prevLayer, weights, bias){
     }
     Z /= maxSum;
     //Z += bias;
-    if (Z < bias) {output = 0.2 * Z;} else {output = Z - 0.8 * bias;}
+    if (Z < bias) {output = 0.2 * Z;} else {output = 2*Z - 1.8 * bias;}
     return [Z, output];
 };
 
@@ -28,7 +28,7 @@ function initNN(){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NN[Nlayer][Nnode] = {value: 0};
             if (Nlayer > 0){
-                NN[Nlayer][Nnode] = {weights: [], bias: 0.01, Z: 0, value: 0};
+                NN[Nlayer][Nnode] = {weights: [], bias: 0.5, Z: 0, value: 0};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
                     NN[Nlayer][Nnode].weights[NnodePrev] = Math.random() - 0.1;
                 }
@@ -97,7 +97,7 @@ function dCost_dReLU (out, target) { return 2 * (out - target);   }
 function dReLU_dZ    (Z, bias)     { return (Z > bias) ? 1 : 0.2; }
 // function dValue  (weight)          { return weight;               }
 // function dWeight (PrevLayerValue)  { return PrevLayerValue;       }
-function dReLU_dBias (Z, bias)     { return (Z > bias) ? -1 : 0;  }
+function dReLU_dBias (Z, bias)     { return (Z > bias) ? -2 : 0;  }
 function updateNNg(inputLayer, targetOutput){
     initNNg();
     updateNN(inputLayer);
@@ -162,6 +162,7 @@ function backPropagate(cycles, batchSize, dX){
             }
             
         }
+        dX *= 0.99;
     }
   
   localStorage.setItem("NN", JSON.stringify(NN));
