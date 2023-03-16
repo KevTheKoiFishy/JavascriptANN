@@ -28,7 +28,7 @@ function initNN(){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NN[Nlayer][Nnode] = {value: 0};
             if (Nlayer > 0){
-                NN[Nlayer][Nnode] = {weights: [], bias: 0.5, Z: 0, value: 0};
+                NN[Nlayer][Nnode] = {weights: [], bias: 0, Z: 0, value: 0};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
                     NN[Nlayer][Nnode].weights[NnodePrev] = Math.random() - 0.1;
                 }
@@ -118,7 +118,7 @@ function updateNNg(inputLayer, targetOutput){
                 //How much each of Nlayer's nodes wants a given prev layer's node to change
                 NNg[Nlayer - 1][NnodePrev].dValue      += dC_dZ * NN[Nlayer][Nnode].weights[NnodePrev] / nodesByLayer[Nlayer];
                 //Each of Nlayer's nodes should change [each of its weights proportionally with the input value it weights]
-                NNg[Nlayer][Nnode].dWeights[NnodePrev] += dC_dZ * NN[Nlayer - 1][NnodePrev].value / nodesByLayer[Nlayer - 1]**2;
+                NNg[Nlayer][Nnode].dWeights[NnodePrev]  = dC_dZ * NN[Nlayer - 1][NnodePrev].value;
             }
         }
     }
