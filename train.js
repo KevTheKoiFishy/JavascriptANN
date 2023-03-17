@@ -33,7 +33,9 @@ function scrambleTraining(){
 }
 
 //Convolve
-function convolveTraining
+function convolveTraining(){
+  
+}
 
 
 //Cost Function
@@ -76,6 +78,6 @@ document.getElementById("TRAIN").addEventListener("click",
     backPropagate(
       parseInt  ( window.prompt("Cycles: How many cycles of backpropagating all the training data?", "1e4") ),
       parseInt  ( window.prompt("Batch size: How many training samples used to calculate gradient?", "100") ),
-      parseFloat( window.prompt("dX: Multiply gradient by this and subtract it from NN parameters.", "0.1") )
+      parseFloat( window.prompt("dX: Multiply gradient by this and subtract it from NN parameters.", "0.01") )
       );
   });
