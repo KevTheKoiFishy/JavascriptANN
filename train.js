@@ -65,9 +65,12 @@ document.getElementById("COST").addEventListener("click", showCost);
 document.getElementById("TRAIN").addEventListener("click",
   () => {
     scrambleTraining();
+    if ( window.confirm("Blur the Training Data?") ){
+      var convolutionMatrix = JSON.parse(window.prompt("Enter Convolution Matrix (3x3)", "[0.5, .5*2**-0.5]"));
+    }
     backPropagate(
-      parseInt  ( prompt("Cycles: How many cycles of backpropagating all the training data?", "1e4") ),
-      parseInt  ( prompt("Batch size: How many training samples used to calculate gradient?", "100") ),
-      parseFloat( prompt("dX: Multiply gradient by this and subtract it from NN parameters.", "0.1") )
+      parseInt  ( window.prompt("Cycles: How many cycles of backpropagating all the training data?", "1e4") ),
+      parseInt  ( window.prompt("Batch size: How many training samples used to calculate gradient?", "100") ),
+      parseFloat( window.prompt("dX: Multiply gradient by this and subtract it from NN parameters.", "0.1") )
       );
   });
