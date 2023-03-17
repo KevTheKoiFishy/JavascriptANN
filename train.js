@@ -59,4 +59,11 @@ function showCost(){
   }, 1);
 }
 
-document.getElementById("TRAIN").addEventListener("click", showCost);
+document.getElementById("COST").addEventListener("click", showCost);
+document.getElementById("TRAIN").addEventListener("click",
+  () => {
+    backPropagate(
+      parseInt( prompt("How many cycles of backpropagating all the training data?", "1e4") );
+      parseInt( prompt("", "1e4") );
+      dX);
+  });

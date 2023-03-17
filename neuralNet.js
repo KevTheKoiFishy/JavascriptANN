@@ -165,5 +165,5 @@ function backPropagate(cycles, batchSize, dX){
         //dX *= 0.99;
     }
   
-  localStorage.setItem("NN", JSON.stringify(NN));
+    localStorage.setItem("NN", JSON.stringify(NN));
 }
