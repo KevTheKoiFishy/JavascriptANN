@@ -34,6 +34,7 @@ function scrambleTraining(){
 
 //Convolve
 function convolveTraining(convolutionMatrix){
+  var convolvedTrainingData = [];
   for (var Y = 0; Y < gridHeight; ++Y){
     for (var X = 0; X < gridWidth; ++X){
       var divideMatrixBy = 9;
@@ -42,7 +43,17 @@ function convolveTraining(convolutionMatrix){
           for (var i = 0; i < convolutionMatrix.length; ++i)
             convolutionMatrix[i] /= divideMatrixBy;
       
-      
+      for (var i = 0; i < convolutionMatrix.length; ++i){
+        var  =
+            (
+               (X + i%3 - 1) < 0
+            || (X + i%3 - 1) > gridWidth
+            || (Y + Math.floor(i/3) - 1) < 0
+            || (Y + Math.floor(i/3) - 1) > gridHeight
+            )
+            ? 0 : trainingData[(X + i%3 - 1) + gridWidth * (Y + Math.floor(i/3) - 1)];
+        convolvedTrainingData[X + gridWidth * Y] +=  * convolutionMatrix[i];
+      }
     }
   }
 }
