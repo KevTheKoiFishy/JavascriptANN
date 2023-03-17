@@ -39,7 +39,10 @@ function convolveTraining(convolutionMatrix){
       var divideMatrixBy = 9;
           if ((X == 0 || X == gridWidth) && (Y == 0 || Y == gridWidth)){ divideMatrixBy = 4; }
           if ((X == 0 || X == gridWidth) || (Y == 0 || Y == gridWidth)){ divideMatrixBy = 6; }
-          //convolutionMatrix.forEach
+          for (var i = 0; i < convolutionMatrix.length; ++i)
+            convolutionMatrix[i] /= divideMatrixBy;
+      
+      
     }
   }
 }
