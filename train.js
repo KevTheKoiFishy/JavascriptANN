@@ -69,25 +69,25 @@ function convolveTraining(convolutionMatrix){
 
 
 //Cost Function
-var costValue = 0, averageCostValue = 0;
-
+var costValue = 0, totalCost = 0, averageCostValue = 0;
 function showCost(){
+  costValue = 0, totalCost = 0, averageCostValue = 0;costValue = 0, averageCostValue = 0;
+
   //compute average cost
   Ndatum = 0;
   var trainInterval = setInterval( () => {
       if (Ndatum >= trainingData.length){
         clearInterval(trainInterval);
-        averageCostValue /= trainingData.length / 2;
       }
       else {
         for (var i = 0; i < nodesByLayer[0]; ++i)
-          if (displayGrid){document.getElementById(i).style.background = "rgba("trainingData[Ndatum + 1][i] ? "active" : "inac}
+          if (displayGrid){document.getElementById(i).setAttribute("style", "background: rgba(235, 27, 110, " + trainingData[Ndatum + 1][i]*100 + "%);");}
           //if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
         
         updateNN(trainingData[Ndatum + 1]);
 
         costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
-        averageCostValue += costValue;
+        averageCostValue += costValue / (trainingData.length / 2);
         
         if (updateConsole)      updateConsoleNow();
         if (updateVisualizer)   updateVisualizerNow();

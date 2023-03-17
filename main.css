@@ -8,11 +8,11 @@ table {
   border-collapse: collapse;
   position: relative;
   width: 300px; height: 300px;
+  background: #ecf0f8;
 }
 td {
   width: 13px;
   height: 16px;
-  background: #ecf0f8;
   border: .1px solid #9037a3;
 }
 td.active {
