@@ -4,6 +4,17 @@ var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer,
     updateVisualizer, updateVisualizerNow, cost, backPropagate;
 var displayGrid = true;
 
+
+//Convert output value into output vector
+// 1 -> [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
+  var vectorOut = [];
+  for (var Nnumeral = 0; Nnumeral < 10; ++Nnumeral){
+    vectorOut.push((Nnumeral == trainingData[Ndatum]) & 1);
+  }
+  trainingData[Ndatum] = vectorOut;
+}
+
 //Scramble training data
 function scrambleTraining(){
   var indexesNotPicked = [];
@@ -21,15 +32,9 @@ function scrambleTraining(){
   scrambledTrainingData = undefined; // save RAM
 }
 
-//Convert output value into output vector
-// 1 -> [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
-  var vectorOut = [];
-  for (var Nnumeral = 0; Nnumeral < 10; ++Nnumeral){
-    vectorOut.push((Nnumeral == trainingData[Ndatum]) & 1);
-  }
-  trainingData[Ndatum] = vectorOut;
-}
+//Convolve
+function convolveTraining
+
 
 //Cost Function
 var costValue = 0, averageCostValue = 0;
@@ -66,7 +71,7 @@ document.getElementById("TRAIN").addEventListener("click",
   () => {
     scrambleTraining();
     if ( window.confirm("Blur the Training Data?") ){
-      var convolutionMatrix = JSON.parse(window.prompt("Enter Convolution Matrix (3x3)", "[0.5, .5*2**-0.5]"));
+      var convolutionMatrix = JSON.parse(window.prompt("Enter Convolution Matrix (3x3)", "[.2*2**-0.5, .2, .2*2**-0.5, .2, 1, .2, .2*2**-0.5, .2, .2*2**-0.5]"));
     }
     backPropagate(
       parseInt  ( window.prompt("Cycles: How many cycles of backpropagating all the training data?", "1e4") ),

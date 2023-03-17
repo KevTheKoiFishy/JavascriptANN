@@ -15,13 +15,14 @@ function ReLU(prevLayer, weights, bias){
 // var nodesByLayer = [1, 1, 1, 1];
 // var NN =
 // [
-//     [{value: 0}],
-//     [{value: undefined, Z: undefined, weights: [0.5], bias: 0}],
-//     [{value: undefined, Z: undefined, weights: [0.5], bias: 0}],
-//     [{value: undefined, Z: undefined, weights: [0.5], bias: 0}],
+//     [{value: undefined}],
+//     [{value: undefined, Z: undefined, weights: [0.5],      bias: 0}, {value: undefined, Z: undefined, weights: [0.5],      bias: 0}],
+//     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}, {value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
+//     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
 // ];
+var gridWidth, gridHeight;
+var nodesByLayer = [gridWidth*gridHeight, 16, 16, 10];
 var NN = [];
-var nodesByLayer = [256, 16, 16, 10];
 function initNN(){
     for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
         NN[Nlayer] = [];
@@ -127,11 +128,12 @@ function updateNNg(inputLayer, targetOutput){
 var scrambleTraining, trainingData;
 //compute gradient & adjust function for each batch of training data
 function backPropagate(cycles, batchSize, dX){
+  
     for (var Ncycle = 0; Ncycle < cycles; ++Ncycle){
         console.log(Ncycle);
         scrambleTraining();
+      
         for (var Nbatch = 0; Nbatch < trainingData.length/(2*batchSize); ++Nbatch){
-            
             initNNg();
             var changesThisBatch = NNg;
             
@@ -164,6 +166,7 @@ function backPropagate(cycles, batchSize, dX){
             }
             
         }
+        
         //dX *= 0.99;
     }
   
