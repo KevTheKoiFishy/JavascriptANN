@@ -35,6 +35,7 @@ function scrambleTraining(){
 //Convolve
 function convolveTraining(convolutionMatrix){
   var convolvedTrainingData = [];
+  
   for (var Y = 0; Y < gridHeight; ++Y){
     for (var X = 0; X < gridWidth; ++X){
       var divideMatrixBy = 9;
@@ -44,18 +45,26 @@ function convolveTraining(convolutionMatrix){
             convolutionMatrix[i] /= divideMatrixBy;
       
       for (var i = 0; i < convolutionMatrix.length; ++i){
-        var  =
+        var convolveCellX = (X + i%3 - 1);
+        var convolveCellY = (Y + Math.floor(i/3) - 1);
+        
+        //if out of bounds, return 0; else, return training data value;
+        var trainingDataValueAtConvolveCell =
             (
-               (X + i%3 - 1) < 0
-            || (X + i%3 - 1) > gridWidth
-            || (Y + Math.floor(i/3) - 1) < 0
-            || (Y + Math.floor(i/3) - 1) > gridHeight
+               convolveCellX < 0
+            || convolveCellX > gridWidth
+            || convolveCellY < 0
+            || convolveCellY > gridHeight
             )
-            ? 0 : trainingData[(X + i%3 - 1) + gridWidth * (Y + Math.floor(i/3) - 1)];
-        convolvedTrainingData[X + gridWidth * Y] +=  * convolutionMatrix[i];
+            ? 0 : trainingData[convolveCellX + gridWidth * convolveCellY];
+        
+        convolvedTrainingData[X + gridWidth * Y] += trainingDataValueAtConvolveCell * convolutionMatrix[i];
+        
       }
     }
   }
+  
+  trainingData = convolvedTrainingData;
 }
 
 
@@ -71,11 +80,11 @@ function showCost(){
         averageCostValue /= trainingData.length / 2;
       }
       else {
-        for (var i = 0; i < nodesByLayer[0]; ++i){
-          NN[0][i].value = trainingData[Ndatum + 1][i];
-          if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
-        }
-        updateNN(NN, nodesByLayer);
+        for (var i = 0; i < nodesByLayer[0]; ++i)
+          if (displayGrid){document.getElementById(i).style.background = "rgba("trainingData[Ndatum + 1][i] ? "active" : "inac}
+          //if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
+        
+        updateNN(trainingData[Ndatum + 1]);
 
         costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
         averageCostValue += costValue;
