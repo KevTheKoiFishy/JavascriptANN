@@ -71,31 +71,34 @@ function convolveTraining(convolutionMatrix){
 //Cost Function
 var costValue = 0, totalCost = 0, averageCostValue = 0;
 function showCost(){
-  costValue = 0, totalCost = 0, averageCostValue = 0;costValue = 0, averageCostValue = 0;
+  costValue = 0, totalCost = 0, averageCostValue = 0;
 
   //compute average cost
   Ndatum = 0;
-  var trainInterval = setInterval( () => {
-      if (Ndatum >= trainingData.length){
-        clearInterval(trainInterval);
-      }
-      else {
-        for (var i = 0; i < nodesByLayer[0]; ++i)
-          if (displayGrid){document.getElementById(i).setAttribute("style", "background: rgba(235, 27, 110, " + trainingData[Ndatum + 1][i]*100 + "%);");}
-          //if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
+  var costCheckInterval =
+      setInterval( () => {
+          if (Ndatum >= trainingData.length){
+            clearInterval(costCheckInterval);
+          }
         
-        updateNN(trainingData[Ndatum + 1]);
+          else {
+            for (var i = 0; i < nodesByLayer[0]; ++i)
+              if (displayGrid){document.getElementById(i).setAttribute("style", "background: rgba(235, 27, 110, " + trainingData[Ndatum + 1][i]*100 + "%);");}
+              //if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
 
-        costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
-        averageCostValue += costValue / (trainingData.length / 2);
-        
-        if (updateConsole)      updateConsoleNow();
-        if (updateVisualizer)   updateVisualizerNow();
-        
-        Ndatum += 2;
-      }
+            updateNN(trainingData[Ndatum + 1]);
 
-  }, 1);
+            costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
+            totalCost += costValue;
+            averageCostValue = totalCost / (Ndatum / 2);
+
+            if (updateConsole)      updateConsoleNow();
+            if (updateVisualizer)   updateVisualizerNow();
+
+            Ndatum += 2;
+          }
+
+      }, 50);
 }
 
 document.getElementById("COST").addEventListener("click", showCost);
@@ -108,7 +111,7 @@ document.getElementById("TRAIN").addEventListener("click",
     }
     backPropagate(
       JSON.parse( window.prompt("Cycles: How many cycles of backpropagating all the training data?", "1e4") ),
-      JSON.parse( window.prompt("Batch size: How many training samples used to calculate gradient?", "100") ),
+      JSON.parse( window.prompt("Batch size: How many training samples used to calculate gradient?", "10") ),
       JSON.parse( window.prompt("dX: Multiply gradient by this and subtract it from NN parameters.", "0.01") )
       );
   });

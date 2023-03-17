@@ -55,7 +55,7 @@ function updateConsoleNow(){
     outBox.innerText += "Cost: " + costValue + "\n";
   
   if (averageCostValue != undefined)
-    outBox.innerText += "Avg Cost: " + (averageCostValue/Ndatum*2) + "\n";
+    outBox.innerText += "Avg Cost: " + averageCostValue + "\n";
 
   for (var i = 0; i < NN[NN.length - 1].length; ++i){
     var val = NN[NN.length - 1][i].value;
