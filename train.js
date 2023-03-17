@@ -33,12 +33,13 @@ function scrambleTraining(){
 }
 
 //Convolve
-function convolveTraining(){
+function convolveTraining(convolutionMatrix){
   for (var Y = 0; Y < gridHeight; ++Y){
     for (var X = 0; X < gridWidth; ++X){
       var divideMatrixBy = 9;
-          if (X == 0 || X == gridWidth) && Y == 0){ divideMatrixBy }
-          if (X == 0 || Y == 0){ divideMatrixBy }
+          if ((X == 0 || X == gridWidth) && (Y == 0 || Y == gridWidth)){ divideMatrixBy = 4; }
+          if ((X == 0 || X == gridWidth) || (Y == 0 || Y == gridWidth)){ divideMatrixBy = 6; }
+          //convolutionMatrix.forEach
     }
   }
 }
@@ -80,6 +81,7 @@ document.getElementById("TRAIN").addEventListener("click",
     scrambleTraining();
     if ( window.confirm("Blur the Training Data?") ){
       var convolutionMatrix = JSON.parse(window.prompt("Enter Convolution Matrix (3x3)", "[1, 3, 1, 3, 9, 3, 1, 3, 1]"));
+      convolveTraining(convolutionMatrix);
     }
     backPropagate(
       JSON.parse( window.prompt("Cycles: How many cycles of backpropagating all the training data?", "1e4") ),
