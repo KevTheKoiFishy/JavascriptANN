@@ -124,10 +124,12 @@ function updateNNg(inputLayer, targetOutput){
     }
 }
 
+var scrambleTraining, trainingData;
 //compute gradient & adjust function for each batch of training data
 function backPropagate(cycles, batchSize, dX){
     for (var Ncycle = 0; Ncycle < cycles; ++Ncycle){
         console.log(Ncycle);
+        scrambleTraining();
         for (var Nbatch = 0; Nbatch < trainingData.length/(2*batchSize); ++Nbatch){
             
             initNNg();

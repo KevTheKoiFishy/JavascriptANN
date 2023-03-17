@@ -1,23 +1,25 @@
 //make gltich.com compiler stop screaming
 var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer,
     datagrid, displayUpdatedNN, updateConsole, updateConsoleNow,
-    updateVisualizer, updateVisualizerNow, cost;
+    updateVisualizer, updateVisualizerNow, cost, backPropagate;
 var displayGrid = true;
 
 //Scramble training data
-var indexesNotPicked = [];
-    for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2)
-    indexesNotPicked.push(Ndatum);
-var scrambledTrainingData = [];
-    for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
-      var indexOf_indexesNotPicked = Math.floor(Math.random() * indexesNotPicked.length);
-      var indexToPick = indexesNotPicked[indexOf_indexesNotPicked];
-      scrambledTrainingData.push(trainingData[indexToPick    ]);
-      scrambledTrainingData.push(trainingData[indexToPick + 1]);
-      indexesNotPicked.splice(indexOf_indexesNotPicked, 1);
-    }
-trainingData = scrambledTrainingData;
-scrambledTrainingData = undefined; // save RAM
+function scrambleTraining(){
+  var indexesNotPicked = [];
+      for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2)
+      indexesNotPicked.push(Ndatum);
+  var scrambledTrainingData = [];
+      for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
+        var indexOf_indexesNotPicked = Math.floor(Math.random() * indexesNotPicked.length);
+        var indexToPick = indexesNotPicked[indexOf_indexesNotPicked];
+        scrambledTrainingData.push(trainingData[indexToPick    ]);
+        scrambledTrainingData.push(trainingData[indexToPick + 1]);
+        indexesNotPicked.splice(indexOf_indexesNotPicked, 1);
+      }
+  trainingData = scrambledTrainingData;
+  scrambledTrainingData = undefined; // save RAM
+}
 
 //Convert output value into output vector
 // 1 -> [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -62,8 +64,10 @@ function showCost(){
 document.getElementById("COST").addEventListener("click", showCost);
 document.getElementById("TRAIN").addEventListener("click",
   () => {
+    scrambleTraining();
     backPropagate(
-      parseInt( prompt("How many cycles of backpropagating all the training data?", "1e4") );
-      parseInt( prompt("", "1e4") );
-      dX);
+      parseInt  ( prompt("Cycles: How many cycles of backpropagating all the training data?", "1e4") ),
+      parseInt  ( prompt("Batch size: How many training samples used to calculate gradient?", "100") ),
+      parseFloat( prompt("dX: Multiply gradient by this and subtract it from NN parameters.", "0.1") )
+      );
   });
