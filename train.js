@@ -98,7 +98,7 @@ function showCost(){
             Ndatum += 2;
           }
 
-      }, 50);
+      }, 1);
 }
 
 document.getElementById("COST").addEventListener("click", showCost);
