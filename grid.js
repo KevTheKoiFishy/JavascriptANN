@@ -56,12 +56,18 @@ function updateConsoleNow(){
   
   if (averageCostValue != undefined)
     outBox.innerText += "Avg Cost: " + averageCostValue + "\n";
-
+  
+  var highestP     = 0;
+  var predictedNum = 0;
   for (var i = 0; i < NN[NN.length - 1].length; ++i){
     var val = NN[NN.length - 1][i].value;
-    //val = Math.round(val * 10000) / 10000; 
+    if (val > highestP){
+      highestP     = val;
+      predictedNum = i;
+    }
     outBox.innerText += "P(" + i + "): " + val + "\n";
   }
+  outBox.innerText += "PREDICTION: " + predictedNum + "\n"
 }
 function updateVisualizerNow(){
   for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
