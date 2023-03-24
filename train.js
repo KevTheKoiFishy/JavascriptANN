@@ -109,7 +109,7 @@ function showCost(){
               }
             }
             //this is such a cheat to compare two vectors but whatever LMAO
-            if (predictedNum.toString() == vectorizeOutput(predictedNum).toString())
+            if (trainingData[Ndatum].toString() == vectorizeOutput(predictedNum).toString())
               ++numCorrect;
 
             if (updateConsole)      updateConsoleNow();
