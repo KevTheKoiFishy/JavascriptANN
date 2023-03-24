@@ -7,12 +7,16 @@ var displayGrid = true;
 
 //Convert output value into output vector
 // 1 -> [0, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
+function vectorizeOutput(character){
   var vectorOut = [];
   for (var Nnumeral = 0; Nnumeral < 10; ++Nnumeral){
-    vectorOut.push((Nnumeral == trainingData[Ndatum]) & 1);
+    vectorOut.push((Nnumeral == character) & 1);
   }
-  trainingData[Ndatum] = vectorOut;
+  return vectorOut;
+}
+
+for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
+  trainingData[Ndatum] = vectorizeOutput(trainingData[Ndatum]);
 }
 
 //Scramble training data
@@ -70,11 +74,14 @@ function convolveTraining(convolutionMatrix){
 
 //Cost Function
 var costValue = 0, totalCost = 0, averageCostValue = 0, numCorrect = 0;
+var Ndatum = 0;
+var highestP = 0, predictedNum = 0;
 function showCost(){
   costValue = 0, totalCost = 0, averageCostValue = 0;
+  Ndatum = 0;
+  numCorrect = 0;
 
   //compute average cost
-  Ndatum = 0;
   var costCheckInterval =
       setInterval( () => {
           if (Ndatum >= trainingData.length){
@@ -91,6 +98,19 @@ function showCost(){
             costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
             totalCost += costValue;
             averageCostValue = totalCost / (Ndatum / 2);
+            
+            highestP     = 0;
+            predictedNum = 0;
+            for (var i = 0; i < NN[NN.length - 1].length; ++i){
+              var val = NN[NN.length - 1][i].value;
+              if (val > highestP){
+                highestP     = val;
+                predictedNum = i;
+              }
+            }
+            //this is such a cheat to compare two vectors but whatever LMAO
+            if (predictedNum.toString() == vectorizeOutput(predictedNum).toString())
+              ++numCorrect;
 
             if (updateConsole)      updateConsoleNow();
             if (updateVisualizer)   updateVisualizerNow();
