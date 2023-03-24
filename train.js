@@ -69,7 +69,7 @@ function convolveTraining(convolutionMatrix){
 
 
 //Cost Function
-var costValue = 0, totalCost = 0, averageCostValue = 0;
+var costValue = 0, totalCost = 0, averageCostValue = 0, numCorrect = 0;
 function showCost(){
   costValue = 0, totalCost = 0, averageCostValue = 0;
 
