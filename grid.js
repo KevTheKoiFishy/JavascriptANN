@@ -42,25 +42,28 @@ document.getElementById("CLEAR").addEventListener("click", refreshGrid);
 
 //handle console and visuals
 var Ndatum, costValue, averageCostValue;
+var outBox = document.getElementById("exportBox");
 function updateConsoleNow(){
   //see output layer
-  var outBox = document.getElementById("exportBox");
   outBox.innerText = "";
   outBox.innerText += datagrid + "\n";
 
-  if (Ndatum != undefined)
-    outBox.innerText += "Sample No." + (Ndatum/2 + 1) + "\n";
   
-  if (costValue != undefined)
-    outBox.innerText += "Cost: " + costValue + "\n";
+  outBox.innerText += "Sample No." + (Ndatum/2 + 1) + "\n";
+  outBox.innerText += "Cost: " + costValue + "\n";
+  outBox.innerText += "Avg Cost: " + averageCostValue + "\n";
   
-  if (averageCostValue != undefined)
-    outBox.innerText += "Avg Cost: " + averageCostValue + "\n";
-  
+  highestP     = 0;
+  predictedNum = 0;
   for (var i = 0; i < NN[NN.length - 1].length; ++i){
     var val = NN[NN.length - 1][i].value;
     outBox.innerText += "P(" + i + "): " + val + "\n";
+    if (val > highestP){
+      highestP     = val;
+      predictedNum = i;
+    }
   }
+  
   outBox.innerText += "PREDICTION: " + predictedNum + "\n";
   outBox.innerText += "ACCURACY: " + numCorrect + "/" + (Ndatum/2) + " = " + (numCorrect/Ndatum * 2);
 }
