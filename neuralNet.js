@@ -103,7 +103,7 @@ function updateNNg(inputLayer, targetOutput){
     initNNg();
     updateNN(inputLayer);
 
-    for (var Nlayer = NN.length; Nlayer > 0; --Nlayer){
+    for (var Nlayer = NN.length - 1; Nlayer >= 0; --Nlayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             //how cost changes with final output layer
             if (Nlayer == NN.length - 1)
