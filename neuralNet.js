@@ -21,7 +21,7 @@ function ReLU(prevLayer, weights, bias){
 //     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
 // ];
 var gridWidth, gridHeight;
-var nodesByLayer = [gridWidth*gridHeight, 10];
+var nodesByLayer = [gridWidth*gridHeight, 20, 10];
 var NN = [];
 function initNN(){
     for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
@@ -103,7 +103,7 @@ function updateNNg(inputLayer, targetOutput){
     initNNg();
     updateNN(inputLayer);
 
-    for (var Nlayer = NN.length - 1; Nlayer >= 0; --Nlayer){
+    for (var Nlayer = NN.length - 1; Nlayer > 0; --Nlayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             //how cost changes with final output layer
             if (Nlayer == NN.length - 1)
@@ -111,7 +111,7 @@ function updateNNg(inputLayer, targetOutput){
             
             //how cost changes with value of Nlayer's outputs
             var dC_dF = NNg[Nlayer][Nnode].dValue;            
-            var dC_dZ = dC_dF * dReLU_dZ(NN[Nlayer][Nnode].Z, NN[Nlayer][Nnode].bias); //dC_dF * dF/dZ
+            var dC_dZ = dC_dF * dReLU_dZ(NN[Nlayer][Nnode].Z, NN[Nlayer][Nnode].bias); //dC/dF * dF/dZ
             
             //How much each of Nlayer's nodes should change its biases
             NNg[Nlayer][Nnode].dBias = dC_dF * dReLU_dBias(NN[Nlayer][Nnode].Z, NN[Nlayer][Nnode].bias);
