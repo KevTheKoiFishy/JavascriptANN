@@ -42,30 +42,29 @@ function convolveTraining(convolutionMatrix){
   
   for (var Y = 0; Y < gridHeight; ++Y){
     for (var X = 0; X < gridWidth; ++X){
-      var divideMatrixBy = 25;
-          var IsXAtBoundary = (X == 0 || X == gridWidth - 1);
-          var IsYAtBoundary = (Y == 0 || Y == gridWidth - 1);
-          if      (IsXAtBoundary && IsYAtBoundary){ divideMatrixBy = 16; }
-          else if (IsXAtBoundary || IsYAtBoundary){ divideMatrixBy = 20; }
-          for (var i = 0; i < convolutionMatrix.length; ++i)
-            convolutionMatrix[i] /= divideMatrixBy;
+      var thisMatrix = convolutionMatrix;
+      
+      //zero weights when edge touching
+      // if (X == 0)              thisMatrix[0] = 0; thisMatrix[3] = 0; thisMatrix[6] = 0;
+      // if (Y == 0)              thisMatrix[0] = 0; thisMatrix[1] = 0; thisMatrix[2] = 0;
+      // if (X == gridWidth - 1)  thisMatrix[2] = 0; thisMatrix[5] = 0; thisMatrix[8] = 0;
+      // if (Y == gridHeight - 1) thisMatrix[6] = 0; thisMatrix[7] = 0; thisMatrix[8] = 0;
       
       for (var i = 0; i < convolutionMatrix.length; ++i){
-        var convolveCellX = (X + i%3 - 1);
-        var convolveCellY = (Y + Math.floor(i/3) - 1);
+        var convolveCellX = i%3 - 1;
+        var convolveCellY = Math.floor(i/3) - 1;
         
         //if out of bounds, return 0; else, return training data value;
-        var newCellValue =
+        var dataAtConvolveCell =
             (
                convolveCellX < 0
-            || convolveCellX > gridWidth
+            || convolveCellX > gridWidth - 1
             || convolveCellY < 0
-            || convolveCellY > gridHeight
+            || convolveCellY < gridHeight - 1
             )
-            ? 0 : trainingData[convolveCellX + gridWidth * convolveCellY];
+            ? 0 : trainingData[ (X + convolveCellX) + gridWidth*(Y + convolveCellY) ];
         
-        convolvedTrainingData[X + gridWidth * Y] += newCellValue * convolutionMatrix[i];
-        
+        convolvedTrainingData[X + gridWidth * Y] += dataAtConvolveCell * convolutionMatrix[i];
       }
     }
   }
@@ -128,7 +127,7 @@ document.getElementById("TRAIN").addEventListener("click",
   () => {
     scrambleTraining();
     if ( window.confirm("Blur the Training Data?") ){
-      var convolutionMatrix = JSON.parse(window.prompt("Enter Convolution Matrix (3x3)", "[1, 3, 1, 3, 9, 3, 1, 3, 1]"));
+      var convolutionMatrix = JSON.parse(window.prompt("Enter Convolution Matrix (3x3)", "[1/25, 3/25, 1/25, 3/25, 9/25, 3/25, 1/25, 3/25, 1/25]"));
       convolveTraining(convolutionMatrix);
     }
     backPropagate(
