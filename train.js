@@ -42,9 +42,11 @@ function convolveTraining(convolutionMatrix){
   
   for (var Y = 0; Y < gridHeight; ++Y){
     for (var X = 0; X < gridWidth; ++X){
-      var divideMatrixBy = 9;
-          if ((X == 0 || X == gridWidth) && (Y == 0 || Y == gridWidth)){ divideMatrixBy = 4; }
-          if ((X == 0 || X == gridWidth) || (Y == 0 || Y == gridWidth)){ divideMatrixBy = 6; }
+      var divideMatrixBy = 25;
+          var IsXAtBoundary = (X == 0 || X == gridWidth - 1);
+          var IsYAtBoundary = (Y == 0 || Y == gridWidth - 1);
+          if      (IsXAtBoundary && IsYAtBoundary){ divideMatrixBy = 16; }
+          else if (IsXAtBoundary || IsYAtBoundary){ divideMatrixBy = 20; }
           for (var i = 0; i < convolutionMatrix.length; ++i)
             convolutionMatrix[i] /= divideMatrixBy;
       
@@ -53,7 +55,7 @@ function convolveTraining(convolutionMatrix){
         var convolveCellY = (Y + Math.floor(i/3) - 1);
         
         //if out of bounds, return 0; else, return training data value;
-        var trainingDataValueAtConvolveCell =
+        var newCellValue =
             (
                convolveCellX < 0
             || convolveCellX > gridWidth
@@ -62,7 +64,7 @@ function convolveTraining(convolutionMatrix){
             )
             ? 0 : trainingData[convolveCellX + gridWidth * convolveCellY];
         
-        convolvedTrainingData[X + gridWidth * Y] += trainingDataValueAtConvolveCell * convolutionMatrix[i];
+        convolvedTrainingData[X + gridWidth * Y] += newCellValue * convolutionMatrix[i];
         
       }
     }
