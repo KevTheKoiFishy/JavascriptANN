@@ -87,8 +87,8 @@ function convolveGrid(grid, convolutionMatrix) {
 
   return convolvedGrid;
 }
+var convolvedTrainingData = trainingData;
 function convolveTraining(convolutionMatrix){
-  var convolvedTrainingData = trainingData;
   
   //   for (var Y = 0; Y < gridHeight; ++Y){
   //     for (var X = 0; X < gridWidth; ++X){
@@ -128,23 +128,31 @@ function convolveTraining(convolutionMatrix){
     for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
       convolvedTrainingData[Nsample][Ncell] = 0;
     
-    for (var Y = 1; Y < gridHeight-1; ++Y){
-    for (var X = 1; X < gridWidth-1;  ++X){
-        for (var convolveY = 0; convolveY < 3; ++convolveY){
-        for (var convolveX = 0; convolveX < 3; ++convolveX){
-          // convolvedTrainingData[Nsample][  X                + gridWidth *  Y                ]
-          //       += trainingData[Nsample][ (X + convolveX-1) + gridWidth * (Y + convolveY-1) ]
-          //       *      convolutionMatrix[  convolveX        + 3         *  convolveY        ];
-          convolvedTrainingData[Nsample][Y * gridWidth + X] += trainingData[Nsample][(X + convolveX-1) + gridWidth * (Y + convolveY-1)] * convolutionMatrix[(convolveY) * 3 + (convolveX)];
-        }
-        }
-    }
-    }
+    var grid = trainingData[Nsample];
+    // var convolvedGrid = convolvedTrainingData[Nsample];
+        console.log(Nsample + " | " + trainingData[Nsample]);
+
+    
+//     for (var Y = 1; Y < gridHeight-1; ++Y){
+//     for (var X = 1; X < gridWidth-1;  ++X){
+//         for (var convolveY = 0; convolveY < 3; ++convolveY){
+//         for (var convolveX = 0; convolveX < 3; ++convolveX){
+//           convolvedGrid[  X                + gridWidth *  Y                ]
+//                 +=                  grid[ (X + convolveX-1) + gridWidth * (Y + convolveY-1) ]
+//                 *      convolutionMatrix[  convolveX        + 3         *  convolveY        ];
+          
+//         // console.log("("+X+","+Y+"), ("+convolveX+","+convolveY+") | " + trainingData[Nsample][ (X + convolveX-1) + gridWidth * (Y + convolveY-1) ]);
+//         }
+//         }
+//     }
+//     }
+    
+//     convolvedTrainingData[Nsample] = convolvedGrid;
     // trainingData[Nsample] = convolveGrid(trainingData[Nsample], convolutionMatrix);
     
   }
   
-  trainingData = convolvedTrainingData;
+  // trainingData = convolvedTrainingData;
 }
 
 
