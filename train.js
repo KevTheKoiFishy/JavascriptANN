@@ -59,9 +59,8 @@ function convolveGrid(grid, convolutionMatrix) {
   return convolvedGrid;
 }
 function convolveTraining(convolutionMatrix){
-  for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
+  for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2)
     trainingData[Nsample] = convolveGrid(trainingData[Nsample], convolutionMatrix);
-  }
 }
 
 //The below code seems NOT TO WORK - writing 0 to convolvedTrainingData to initialize it
@@ -221,7 +220,7 @@ document.getElementById("TRAIN").addEventListener("click",
   () => {
     scrambleTraining();
     if ( window.confirm("Blur the Training Data?") ){
-      var convolutionMatrix = JSON.parse(window.prompt("Enter Convolution Matrix (3x3)", "[1/25, 3/25, 1/25, 3/25, 9/25, 3/25, 1/25, 3/25, 1/25]"));
+      var convolutionMatrix = eval(window.prompt("Enter Convolution Matrix (3x3)", "[1/25, 3/25, 1/25, 3/25, 9/25, 3/25, 1/25, 3/25, 1/25]"));
       convolveTraining(convolutionMatrix);
     }
     backPropagate(
