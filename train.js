@@ -38,7 +38,6 @@ function scrambleTraining(){
 
 //Convolve
 function convolveTraining(convolutionMatrix){
-  return convolutionMatrix;
   var convolvedTrainingData = trainingData;
   
   //   for (var Y = 0; Y < gridHeight; ++Y){
@@ -76,21 +75,21 @@ function convolveTraining(convolutionMatrix){
   
   for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
     //init
-    convolvedTrainingData[Nsample] = [];
     for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
-      convolvedTrainingData[Nsample].push(0);
+      convolvedTrainingData[Nsample][Ncell] = 0;
     
     for (var Y = 1; Y < gridHeight-1; ++Y){
     for (var X = 1; X < gridWidth-1;  ++X){
         for (var convolveY = 0; convolveY < 3; ++convolveY){
         for (var convolveX = 0; convolveX < 3; ++convolveX){
-          convolvedTrainingData[Nsample][X + gridWidth * Y]
-            += trainingData[ (X + convolveX-1) + gridWidth*(Y + convolveY-1) ]
-            *  convolutionMatrix[convolveX + convolveY * 3];
+          convolvedTrainingData[Nsample][  X                + gridWidth *  Y                ]
+                += trainingData[Nsample][ (X + convolveX-1) + gridWidth * (Y + convolveY-1) ]
+                *      convolutionMatrix[  convolveX        + 3         *  convolveY        ];
         }
         }
     }
     }
+    
   }
   
   trainingData = convolvedTrainingData;
