@@ -36,35 +36,43 @@ function scrambleTraining(){
   scrambledTrainingData = undefined; // save RAM
 }
 
-// //Convolve
-// function convolveGrid(grid, convolutionMatrix) {
-//   var convolvedGrid = [];
-//     for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
-//         convolvedGrid.push(0);
-
-//   for (var Y = 1; Y < gridHeight-1; ++Y) {
-//     for (var X = 1; X < gridWidth-1; ++X) {
-
-//       for (var convolveY = 0; convolveY < 3; ++convolveY) {
-//         for (var convolveX = 0; convolveX < 3; ++convolveX) {
-//           convolvedGrid[Y * gridWidth + X]
-//             += grid[(X + convolveX-1) + gridWidth * (Y + convolveY-1)]
-//             *  convolutionMatrix[(convolveY) * 3 + (convolveX)];
-//         }
-//       }
-
-//     }
-//   }
-
-//   return convolvedGrid;
-// }
-// function convolveTraining(convolutionMatrix){
-//   for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
-//     trainingData[Nsample] = convolveGrid(trainingData[Nsample], convolutionMatrix);
-//   }
-// }
-
 //Convolve
+function convolveGrid(grid, convolutionMatrix) {
+  var convolvedGrid = [];
+    for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
+        convolvedGrid.push(0);
+
+  for (var Y = 1; Y < gridHeight-1; ++Y) {
+    for (var X = 1; X < gridWidth-1; ++X) {
+
+      for (var convolveY = 0; convolveY < 3; ++convolveY) {
+        for (var convolveX = 0; convolveX < 3; ++convolveX) {
+          convolvedGrid[Y * gridWidth + X]
+            += grid[(X + convolveX-1) + gridWidth * (Y + convolveY-1)]
+            *  convolutionMatrix[(convolveY) * 3 + (convolveX)];
+        }
+      }
+
+    }
+  }
+
+  return convolvedGrid;
+}
+function convolveTraining(convolutionMatrix){
+  for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
+    trainingData[Nsample] = convolveGrid(trainingData[Nsample], convolutionMatrix);
+  }
+}
+
+//The below code seems NOT TO WORK - writing 0 to convolvedTrainingData to initialize it
+//seems to also write 0 to the corresponding place in trainingData, corrupting it
+//This may be because trainingData is too big - further investigation required.
+//In any case, the above code works, which initializes a blank convolved grid in a new variable
+//and then writes it to convolvedTrainingData when it's done, rather than initializing on
+//convolvedTrainingData.
+/*
+//Convolve
+
 function convolveGrid(grid, convolutionMatrix) {
   var convolvedGrid = [];
     for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
@@ -92,41 +100,43 @@ function convolveTraining(convolutionMatrix){
   
   //   for (var Y = 0; Y < gridHeight; ++Y){
   //     for (var X = 0; X < gridWidth; ++X){
-  /*
-      var thisMatrix = convolutionMatrix;
+  
+//       var thisMatrix = convolutionMatrix;
       
-      //zero weights when edge touching
-      // if (X == 0)              thisMatrix[0] = 0; thisMatrix[3] = 0; thisMatrix[6] = 0;
-      // if (Y == 0)              thisMatrix[0] = 0; thisMatrix[1] = 0; thisMatrix[2] = 0;
-      // if (X == gridWidth - 1)  thisMatrix[2] = 0; thisMatrix[5] = 0; thisMatrix[8] = 0;
-      // if (Y == gridHeight - 1) thisMatrix[6] = 0; thisMatrix[7] = 0; thisMatrix[8] = 0;
+//       //zero weights when edge touching
+//       // if (X == 0)              thisMatrix[0] = 0; thisMatrix[3] = 0; thisMatrix[6] = 0;
+//       // if (Y == 0)              thisMatrix[0] = 0; thisMatrix[1] = 0; thisMatrix[2] = 0;
+//       // if (X == gridWidth - 1)  thisMatrix[2] = 0; thisMatrix[5] = 0; thisMatrix[8] = 0;
+//       // if (Y == gridHeight - 1) thisMatrix[6] = 0; thisMatrix[7] = 0; thisMatrix[8] = 0;
       
-      for (var i = 0; i < convolutionMatrix.length; ++i){
-        var convolveCellX = i%3 - 1;
-        var convolveCellY = Math.floor(i/3) - 1;
+//       for (var i = 0; i < convolutionMatrix.length; ++i){
+//         var convolveCellX = i%3 - 1;
+//         var convolveCellY = Math.floor(i/3) - 1;
         
-        //if out of bounds, return 0; else, return training data value;
-        var dataAtConvolveCell =
-            (
-               convolveCellX < 0
-            || convolveCellX > gridWidth - 1
-            || convolveCellY < 0
-            || convolveCellY < gridHeight - 1
-            )
-            ? 0 : trainingData[ (X + convolveCellX) + gridWidth*(Y + convolveCellY) ];
+//         //if out of bounds, return 0; else, return training data value;
+//         var dataAtConvolveCell =
+//             (
+//                convolveCellX < 0
+//             || convolveCellX > gridWidth - 1
+//             || convolveCellY < 0
+//             || convolveCellY < gridHeight - 1
+//             )
+//             ? 0 : trainingData[ (X + convolveCellX) + gridWidth*(Y + convolveCellY) ];
         
-        convolvedTrainingData[X + gridWidth * Y] += dataAtConvolveCell * convolutionMatrix[i];
-      }
-    }
-  }
-  */
+//         convolvedTrainingData[X + gridWidth * Y] += dataAtConvolveCell * convolutionMatrix[i];
+//       }
+//     }
+//   }
+  
   //instead of checking if the convolution matrix goes out of bounds and then
   //returning 0 if it does, simply do not use the out of bounds cases!
   
   for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
     //init
+    if (Nsample == 1){
     for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
       convolvedTrainingData[Nsample][Ncell] = 0;
+    }
     
     var grid = trainingData[Nsample];
     // var convolvedGrid = convolvedTrainingData[Nsample];
@@ -154,6 +164,7 @@ function convolveTraining(convolutionMatrix){
   
   // trainingData = convolvedTrainingData;
 }
+*/
 
 
 //Cost Function
