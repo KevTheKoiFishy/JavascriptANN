@@ -37,6 +37,27 @@ function scrambleTraining(){
 }
 
 //Convolve
+var gridWidth = 16;
+var gridHeight = 16;
+function convolveGrid(grid, convolutionMatrix) {
+  var convolvedGrid = [];
+    for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
+        convolvedGrid.push(0);
+
+  for (var Y = 1; Y < gridHeight-1; ++Y) {
+    for (var X = 1; X < gridWidth-1; ++X) {
+
+      for (var convolveY = 0; convolveY < 3; ++convolveY) {
+        for (var convolveX = 0; convolveX < 3; ++convolveX) {
+          convolvedGrid[Y * gridWidth + X] += grid[(X + convolveX-1) + gridWidth * (Y + convolveY-1)] * convolutionMatrix[(convolveY) * 3 + (convolveX)];
+        }
+      }
+
+    }
+  }
+
+  return convolvedGrid;
+}
 function convolveTraining(convolutionMatrix){
   var convolvedTrainingData = trainingData;
   
@@ -76,7 +97,7 @@ function convolveTraining(convolutionMatrix){
   for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
     //init
     for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
-      convolvedTrainingData[Nsample][Ncell] = 0;
+      // convolvedTrainingData[Nsample][Ncell] = 0;
     
     for (var Y = 1; Y < gridHeight-1; ++Y){
     for (var X = 1; X < gridWidth-1;  ++X){
@@ -89,6 +110,7 @@ function convolveTraining(convolutionMatrix){
         }
     }
     }
+    // trainingData[Nsample] = convolveGrid(trainingData[Nsample], convolutionMatrix);
     
   }
   
