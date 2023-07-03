@@ -38,6 +38,7 @@ function scrambleTraining(){
 
 //Convolve
 function convolveTraining(convolutionMatrix){
+  return convolutionMatrix;
   var convolvedTrainingData = trainingData;
   
   //   for (var Y = 0; Y < gridHeight; ++Y){
@@ -74,19 +75,18 @@ function convolveTraining(convolutionMatrix){
   //returning 0 if it does, simply do not use the out of bounds cases!
   
   for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
+    //init
     convolvedTrainingData[Nsample] = [];
     for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
       convolvedTrainingData[Nsample].push(0);
     
     for (var Y = 1; Y < gridHeight-1; ++Y){
     for (var X = 1; X < gridWidth-1;  ++X){
-        for (var convolveY = -1; convolveY < 2; ++convolveY){
-        for (var convolveX = -1; convolveX < 2; ++convolveX){
-          var dataAtConvolveCell
-            = trainingData[ (X + convolveX) + gridWidth*(Y + convolveY) ];
-
+        for (var convolveY = 0; convolveY < 3; ++convolveY){
+        for (var convolveX = 0; convolveX < 3; ++convolveX){
           convolvedTrainingData[Nsample][X + gridWidth * Y]
-            += dataAtConvolveCell * convolutionMatrix[convolveX + 1 + (convolveY + 1) * 3];
+            += trainingData[ (X + convolveX-1) + gridWidth*(Y + convolveY-1) ]
+            *  convolutionMatrix[convolveX + convolveY * 3];
         }
         }
     }
