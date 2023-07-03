@@ -38,11 +38,10 @@ function scrambleTraining(){
 
 //Convolve
 function convolveTraining(convolutionMatrix){
-  var convolvedTrainingData = [];
+  var convolvedTrainingData = trainingData;
   
-  
-  for (var Y = 0; Y < gridHeight; ++Y){
-    for (var X = 0; X < gridWidth; ++X){
+  //   for (var Y = 0; Y < gridHeight; ++Y){
+  //     for (var X = 0; X < gridWidth; ++X){
   /*
       var thisMatrix = convolutionMatrix;
       
@@ -74,32 +73,19 @@ function convolveTraining(convolutionMatrix){
   //instead of checking if the convolution matrix goes out of bounds and then
   //returning 0 if it does, simply do not use the out of bounds cases!
   
-  for (var Y = 1; Y < gridHeight-1; ++Y){
-    for (var X = 1; X < gridWidth-1; ++X){
-      var thisMatrix = convolutionMatrix;
-      
-      //zero weights when edge touching
-      // if (X == 0)              thisMatrix[0] = 0; thisMatrix[3] = 0; thisMatrix[6] = 0;
-      // if (Y == 0)              thisMatrix[0] = 0; thisMatrix[1] = 0; thisMatrix[2] = 0;
-      // if (X == gridWidth - 1)  thisMatrix[2] = 0; thisMatrix[5] = 0; thisMatrix[8] = 0;
-      // if (Y == gridHeight - 1) thisMatrix[6] = 0; thisMatrix[7] = 0; thisMatrix[8] = 0;
-      
-      for (var i = 0; i < convolutionMatrix.length; ++i){
-        var convolveCellX = i%3 - 1;
-        var convolveCellY = Math.floor(i/3) - 1;
-        
-        //if out of bounds, return 0; else, return training data value;
-        var dataAtConvolveCell =
-            (
-               convolveCellX < 0
-            || convolveCellX > gridWidth - 1
-            || convolveCellY < 0
-            || convolveCellY < gridHeight - 1
-            )
-            ? 0 : trainingData[ (X + convolveCellX) + gridWidth*(Y + convolveCellY) ];
-        
-        convolvedTrainingData[X + gridWidth * Y] += dataAtConvolveCell * convolutionMatrix[i];
-      }
+  for (var Nsample = 0; Nsample < trainingData.length/2; ++Nsample){
+    for (var Y = 1; Y < gridHeight-1; ++Y){
+    for (var X = 1; X < gridWidth-1;  ++X){
+        for (var convolveY = -1; convolveY < 2; ++convolveY){
+        for (var convolveX = -1; convolveX < 2; ++convolveX){
+          var dataAtConvolveCell
+            = trainingData[ (X + convolveX) + gridWidth*(Y + convolveY) ];
+
+          convolvedTrainingData[Nsample + 1][X + gridWidth * Y]
+            += dataAtConvolveCell * convolutionMatrix[convolveX + 1 + (convolveY + 1) * 3];
+        }
+        }
+    }
     }
   }
   
