@@ -73,7 +73,11 @@ function convolveTraining(convolutionMatrix){
   //instead of checking if the convolution matrix goes out of bounds and then
   //returning 0 if it does, simply do not use the out of bounds cases!
   
-  for (var Nsample = 0; Nsample < trainingData.length/2; ++Nsample){
+  for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
+    convolvedTrainingData[Nsample] = [];
+    for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
+      convolvedTrainingData[Nsample].push(0);
+    
     for (var Y = 1; Y < gridHeight-1; ++Y){
     for (var X = 1; X < gridWidth-1;  ++X){
         for (var convolveY = -1; convolveY < 2; ++convolveY){
@@ -81,7 +85,7 @@ function convolveTraining(convolutionMatrix){
           var dataAtConvolveCell
             = trainingData[ (X + convolveX) + gridWidth*(Y + convolveY) ];
 
-          convolvedTrainingData[Nsample + 1][X + gridWidth * Y]
+          convolvedTrainingData[Nsample][X + gridWidth * Y]
             += dataAtConvolveCell * convolutionMatrix[convolveX + 1 + (convolveY + 1) * 3];
         }
         }
