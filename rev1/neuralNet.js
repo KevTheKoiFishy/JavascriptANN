@@ -199,6 +199,9 @@ function backPropagate(cycles, batchSize, dX){
                 if (updateNNg(dataThisBatch[Ndatum + 1], dataThisBatch[Ndatum]) == -1) {return -1;}
     
                 //add 1/batchSize * NNg to changesThisBatch
+                //💀💀💀 I THOUGHT I WAS ADJUSTING FOR BATCH SIZE
+                //BUT THIS JUST MADE THE TRAINING SUPER SLOW
+                
                 for (var Nlayer = 0; Nlayer < numLayers; ++Nlayer){
                   
                     var nodesThisLayer = nodesByLayer[Nlayer];
@@ -206,12 +209,12 @@ function backPropagate(cycles, batchSize, dX){
                     for (var Nnode = 0; Nnode < nodesThisLayer; ++Nnode){
                         var thisNodeInNNg = NNg[Nlayer][Nnode];
                       
-                        changesThisBatch[Nlayer][Nnode].dValue += thisNodeInNNg.dValue/batchSize;
+                        changesThisBatch[Nlayer][Nnode].dValue += thisNodeInNNg.dValue;// /batchSize;
                       
                         if (Nlayer > 0){
-                            changesThisBatch[Nlayer][Nnode].dBias += thisNodeInNNg.dBias/batchSize;
+                            changesThisBatch[Nlayer][Nnode].dBias += thisNodeInNNg.dBias; // /batchSize;
                             for (var NnodePrev = 0; NnodePrev < nodesPrevLayer; ++NnodePrev){
-                                changesThisBatch[Nlayer][Nnode].dWeights[NnodePrev] += thisNodeInNNg.dWeights[NnodePrev]/batchSize;
+                                changesThisBatch[Nlayer][Nnode].dWeights[NnodePrev] += thisNodeInNNg.dWeights[NnodePrev]; // /batchSize;
                             }
                         }
                     }
