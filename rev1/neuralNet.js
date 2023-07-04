@@ -23,6 +23,7 @@ function ReLU(prevLayer, weights, bias){
 // ];
 var gridWidth, gridHeight, gridSize;
 var nodesByLayer = [gridWidth*gridHeight, 16, 16, 16, 10];
+  var numLayers = nodesByLayer.length;
 var NN = [];
 function initNN(){
     for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
@@ -108,14 +109,16 @@ function updateNNg(inputLayer, targetOutput){
       
         //Store as local var to reduce indexing time
         //Used in NnodePrev loop below
+        var thisLayerInNN  = NN [Nlayer];
+        var thisLayerInNNg = NNg[Nlayer];
         var prevLayerInNN  = NN [Nlayer - 1];
         var prevLayerInNNg = NNg[Nlayer - 1];
         
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
           
             //Store as local var to reduce indexing time
-            var thisNodeInNN  = NN [Nlayer][Nnode];
-            var thisNodeInNNg = NNg[Nlayer][Nnode];
+            var thisNodeInNN  = thisLayerInNN [Nnode];
+            var thisNodeInNNg = thisLayerInNNg[Nnode];
           
             //how cost changes with final output layer
             if (Nlayer == NN.length - 1)
@@ -138,9 +141,13 @@ function updateNNg(inputLayer, targetOutput){
                 thisNodeInNNg.dWeights[NnodePrev]  = dC_dZ * prevLayerInNN.value;
             }
             
-            //re-store thisNodeInNNg in global var
-            NNg[Nlayer][Nnode] = thisNodeInNNg;
+            //re-store thisNodeInNNg in thisLayerInNNg var
+            thisLayerInNNg[Nnode] = thisNodeInNNg;
         }
+      
+        //re-store in global var
+        NNg[Nlayer]     = thisLayerInNNg;
+        NNg[Nlayer - 1] = prevLayerInNNg;
     }
 }
 
@@ -157,7 +164,7 @@ function backPropagate(cycles, batchSize, dX){
             var changesThisBatch = NNg;
             
             for (var Ndatum = Nbatch * 2*batchSize; Ndatum < (Nbatch + 1) * 2*batchSize; Ndatum += 2){
-                updateNNg(trainingData[Ndatum+1], trainingData[Ndatum]);
+                updateNNg(trainingData[Ndatum + 1], trainingData[Ndatum]);
     
                 //add 1/batchSize * NNg to changesThisBatch
                 for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
