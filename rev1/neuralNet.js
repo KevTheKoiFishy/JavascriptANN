@@ -167,8 +167,8 @@ function backPropagate(cycles, batchSize, dX){
             
             //make subarrays of trainingData to avoid indexing such a big object.
             //this will also make multithreading easier later.
-            var dataThisBatch = trainingData.slice(Nbatch * 2*batchSize, Ndatum < (Nbatch + 1) * 2*batchSize);
-            for (var Ndatum = 0; batchSize*2; Ndatum += 2){
+            var dataThisBatch = trainingData.slice(Nbatch * 2*batchSize, (Nbatch + 1) * 2*batchSize);
+            for (var Ndatum = 0; Ndatum < batchSize*2; Ndatum += 2){
                 //BACKPROP MAGIC HAPPENS HERE!
                 updateNNg(dataThisBatch[Ndatum + 1], dataThisBatch[Ndatum]);
     
@@ -191,6 +191,8 @@ function backPropagate(cycles, batchSize, dX){
                     }
                 }
             }
+            //***
+            console.log(JSON.stringify(changesThisBatch));
     
             //add changesThisBatch to NN
             for (var Nlayer = 1; Nlayer < numLayers; ++Nlayer){
