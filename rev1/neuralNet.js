@@ -22,11 +22,11 @@ function ReLU(prevLayer, weights, bias){
 //     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
 // ];
 var gridWidth, gridHeight, gridSize;
-var nodesByLayer = [gridWidth*gridHeight, 16, 16, 16, 10];
+var nodesByLayer = [gridSize, 16, 16, 16, 10];
   var numLayers = nodesByLayer.length;
 var NN = [];
 function initNN(){
-    for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
+    for (var Nlayer = 0; Nlayer < numLayers; ++Nlayer){
         NN[Nlayer] = [];
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NN[Nlayer][Nnode] = {value: 0};
@@ -55,7 +55,7 @@ function updateNN(inputLayer){
             NN[Nlayer][Nnode].value = inputLayer[Nnode];
     
     //feed forward
-    for (var Nlayer = 1; Nlayer < nodesByLayer.length; ++Nlayer){
+    for (var Nlayer = 1; Nlayer < numLayers; ++Nlayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             var ReLUOut = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].bias);
             NN[Nlayer][Nnode].Z     = ReLUOut[0];
@@ -82,7 +82,7 @@ var NNg =
     // [{dValue: 0, dWeights: [0], dBias: 0}],
 ];
 function initNNg(){
-    for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
+    for (var Nlayer = 0; Nlayer < numLayers; ++Nlayer){
         NNg[Nlayer] = [];
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             NNg[Nlayer][Nnode] = {dValue: 0};
@@ -155,25 +155,32 @@ var scrambleTraining, trainingData;
 //compute gradient & adjust function for each batch of training data
 function backPropagate(cycles, batchSize, dX){
   
+    var numBatches = trainingData.length/(2*batchSize);
+  
     for (var Ncycle = 0; Ncycle < cycles; ++Ncycle){
         console.log(Ncycle);
         scrambleTraining();
-      
-        for (var Nbatch = 0; Nbatch < trainingData.length/(2*batchSize); ++Nbatch){
+        
+        for (var Nbatch = 0; Nbatch < numBatches; ++Nbatch){
             initNNg();
-            var changesThisBatch = NNg;
+            var changesThisBatch = NNg; //changesThisBatch will be batch average of NNg
             
-            for (var Ndatum = Nbatch * 2*batchSize; Ndatum < (Nbatch + 1) * 2*batchSize; Ndatum += 2){
-                updateNNg(trainingData[Ndatum + 1], trainingData[Ndatum]);
+            //make subarrays of trainingData to avoid indexing such a big object.
+            //this will also make multithreading easier later.
+            var dataThisBatch = trainingData.slice(Nbatch * 2*batchSize, Ndatum < (Nbatch + 1) * 2*batchSize);
+            for (var Ndatum = 0; batchSize*2; Ndatum += 2){
+                updateNNg(dataThisBatch[Ndatum + 1], dataThisBatch[Ndatum]);
     
                 //add 1/batchSize * NNg to changesThisBatch
-                for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
+                for (var Nlayer = 0; Nlayer < numLayers; ++Nlayer){
                     for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-                        changesThisBatch[Nlayer][Nnode].dValue += NNg[Nlayer][Nnode].dValue/batchSize;
+                        var thisNodeInNNg = NNg[Nlayer][Nnode];
+                      
+                        changesThisBatch[Nlayer][Nnode].dValue += thisNodeInNNg.dValue/batchSize;
                         if (Nlayer > 0){
-                            changesThisBatch[Nlayer][Nnode].dBias += NNg[Nlayer][Nnode].dBias/batchSize;
+                            changesThisBatch[Nlayer][Nnode].dBias += thisNodeInNNg.dBias/batchSize;
                             for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
-                                changesThisBatch[Nlayer][Nnode].dWeights[NnodePrev] += NNg[Nlayer][Nnode].dWeights[NnodePrev]/batchSize;
+                                changesThisBatch[Nlayer][Nnode].dWeights[NnodePrev] += thisNodeInNNg.dWeights[NnodePrev]/batchSize;
                             }
                         }
                     }
@@ -182,7 +189,7 @@ function backPropagate(cycles, batchSize, dX){
             }
     
             //add changesThisBatch to NN
-            for (var Nlayer = 1; Nlayer < nodesByLayer.length; ++Nlayer){
+            for (var Nlayer = 1; Nlayer < numLayers; ++Nlayer){
                 for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
                     NN[Nlayer][Nnode].bias -= dX * changesThisBatch[Nlayer][Nnode].dBias;
                     for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
