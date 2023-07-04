@@ -14,7 +14,6 @@ function vectorizeOutput(character){
   }
   return vectorOut;
 }
-
 for (var Ndatum = 0; Ndatum < trainingData.length; Ndatum += 2){
   trainingData[Ndatum] = vectorizeOutput(trainingData[Ndatum]);
 }
@@ -113,14 +112,19 @@ function showCost(){
       , 1);
 }
 
+document.getElementById("CONVOLVE").addEventListener("click",
+  () => {
+    var convolutionMatrix =
+        eval(window.prompt(
+          "Enter Convolution Matrix (3x3)",
+          "[1/10, 2/10, 1/10, 2/10, 10/10, 2/10, 1/10, 2/10, 1/10]"
+        ));
+    convolveTraining(convolutionMatrix);
+  });
 document.getElementById("COST").addEventListener("click", showCost);
 document.getElementById("TRAIN").addEventListener("click",
   () => {
     scrambleTraining();
-    if ( window.confirm("Blur the Training Data?") ){
-      var convolutionMatrix = eval(window.prompt("Enter Convolution Matrix (3x3)", "[1/25, 3/25, 1/25, 3/25, 9/25, 3/25, 1/25, 3/25, 1/25]"));
-      convolveTraining(convolutionMatrix);
-    }
     backPropagate(
       JSON.parse( window.prompt("Cycles: How many cycles of backpropagating all the training data?", "1e4") ),
       JSON.parse( window.prompt("Batch size: How many training samples used to calculate gradient?", "10") ),
