@@ -2,18 +2,19 @@
   
   <head>
     <link rel="icon" href="https://cdn.glitch.global/d36d6510-6d7e-4bbb-994f-367a2d9d8952/93043e43-8611-4f72-9a3c-65d329e68054.image.png?v=1651167449786">
-    <title>NN Tester</title>
+    <title>Train NN</title>
     <link rel="stylesheet" href="main.css">
     <link rel="stylesheet" href="NNVisualizer.css">
   </head>
   
   <body>
-    
     <div id="gridContainer" align="center"></div>
     <div id="exportContainer" align="center">
       <input type="button" id="updateVisualizer" value="Visualizer On">
       <input type="button" id="updateConsole" value="Console On">
       <input type="button" id="CLEAR" value="💥 Clear Drawing 💣">
+      <input type="button" id="COST"  value="🧮 Calc Cost ❌">
+      <input type="button" id="TRAIN" value="🧠 Start Training 🔢">
       <div id="exportBox" contenteditable="true"></div>
     </div>
     
@@ -50,7 +51,10 @@
     <script src="grid.js"></script>
     <script src="neuralNet.js"></script>
     <script src="NNVisualizer.js"></script>
-    
+
+    <script src="trainingData.js"></script>
+    <script src="train-1.js"></script>
+ 
   </body>
   
 </html>
