@@ -113,23 +113,19 @@ function updateNNg(inputLayer, targetOutput){
         var thisLayerInNNg = NNg[Nlayer];
         var prevLayerInNN  = NN [Nlayer - 1];
         var prevLayerInNNg = NNg[Nlayer - 1];
-        // if (Nlayer == NN.length-1) {
-        //   console.log(JSON.stringify(thisLayerInNN));
-        //   console.log(JSON.stringify(thisLayerInNNg));
-        //   console.log(JSON.stringify(prevLayerInNN));
-        //   console.log(JSON.stringify(prevLayerInNNg));
-        // return 0; }
-
         
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+            var debugCondition = (Nlayer == NN.length - 2 && Nnode == 0);
           
             //Store as local var to reduce indexing time
             var thisNodeInNN  = thisLayerInNN [Nnode];
             var thisNodeInNNg = thisLayerInNNg[Nnode];
           
             //how cost changes with final output layer
+            if (debugCondition) console.log(JSON.stringify(thisNodeInNNg));
             if (Nlayer == NN.length - 1)
                 thisNodeInNNg.dValue = dCost_dReLU(thisNodeInNN.value, targetOutput[Nnode]);
+            if (debugCondition) {console.log(JSON.stringify(thisNodeInNNg)); return -1;}
             
             //how cost changes with value of Nlayer's outputs
             var dC_dF = thisNodeInNNg.dValue;            
@@ -177,7 +173,7 @@ function backPropagate(cycles, batchSize, dX){
             var dataThisBatch = trainingData.slice(Nbatch * 2*batchSize, (Nbatch + 1) * 2*batchSize);
             for (var Ndatum = 0; Ndatum < batchSize*2; Ndatum += 2){
                 //BACKPROP MAGIC HAPPENS HERE!
-                updateNNg(dataThisBatch[Ndatum + 1], dataThisBatch[Ndatum]);
+                if (updateNNg(dataThisBatch[Ndatum + 1], dataThisBatch[Ndatum]) == -1) {return -1;}
     
                 //add 1/batchSize * NNg to changesThisBatch
                 for (var Nlayer = 0; Nlayer < numLayers; ++Nlayer){
