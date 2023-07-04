@@ -33,6 +33,9 @@ grid.addEventListener("mouseup"  , handleMouseUp);
 function activate(cell){
   if (isMouseDown) {
     cell.className = 'active';
+    cell.setAttribute(
+      "style",
+      "background: rgba(235, 27, 110);");
     datagrid[parseInt(cell.id)] = 1;
   }
 }
@@ -46,12 +49,17 @@ function initDatagrid() {
   for (var Ncell = 0; Ncell < gridSize; ++Ncell)
     datagrid.push(0);
 }
-//update grid colors based on a d
-function updateGrid(datagrid) {
-  for (var Ncell = 0; Ncell < gridSize; ++Ncell) {
-    document.getElementById(i).setAttribute(
+//update grid colors based on datagrid[]
+function updateGrid() {
+  for (var Ncell = 0; Ncell < gridSize; ++Ncell)
+    document.getElementById(Ncell).setAttribute(
       "style",
-      "background: rgba(235, 27, 110, " + datagrid[i]*100 + "%);");}
+      "background: rgba(235, 27, 110, " + datagrid[Ncell]*100 + "%);");
 }
-function refreshGrid()  { initDatagrid(); displayUpdatedNN(); }
+//blank grid colors
+function refreshGrid()  {
+  initDatagrid();
+  updateGrid();
+  displayUpdatedNN(); //this function takes care of (visualizer on/off) and (console on/off) buttons
+}
 document.getElementById("CLEAR").addEventListener("click", refreshGrid);
