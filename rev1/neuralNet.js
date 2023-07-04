@@ -169,30 +169,36 @@ function backPropagate(cycles, batchSize, dX){
             //this will also make multithreading easier later.
             var dataThisBatch = trainingData.slice(Nbatch * 2*batchSize, Ndatum < (Nbatch + 1) * 2*batchSize);
             for (var Ndatum = 0; batchSize*2; Ndatum += 2){
+                //BACKPROP MAGIC HAPPENS HERE!
                 updateNNg(dataThisBatch[Ndatum + 1], dataThisBatch[Ndatum]);
     
                 //add 1/batchSize * NNg to changesThisBatch
                 for (var Nlayer = 0; Nlayer < numLayers; ++Nlayer){
-                    for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+                  
+                    var nodesThisLayer = nodesByLayer[Nlayer];
+                    var nodesPrevLayer = nodesByLayer[Nlayer - 1];
+                    for (var Nnode = 0; Nnode < nodesThisLayer; ++Nnode){
                         var thisNodeInNNg = NNg[Nlayer][Nnode];
                       
                         changesThisBatch[Nlayer][Nnode].dValue += thisNodeInNNg.dValue/batchSize;
+                      
                         if (Nlayer > 0){
                             changesThisBatch[Nlayer][Nnode].dBias += thisNodeInNNg.dBias/batchSize;
-                            for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
+                            for (var NnodePrev = 0; NnodePrev < nodesPrevLayer; ++NnodePrev){
                                 changesThisBatch[Nlayer][Nnode].dWeights[NnodePrev] += thisNodeInNNg.dWeights[NnodePrev]/batchSize;
                             }
                         }
                     }
                 }
-                
             }
     
             //add changesThisBatch to NN
             for (var Nlayer = 1; Nlayer < numLayers; ++Nlayer){
-                for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+                var nodesThisLayer = nodesByLayer[Nlayer];
+                var nodesPrevLayer = nodesByLayer[Nlayer - 1];
+                for (var Nnode = 0; Nnode < nodesThisLayer; ++Nnode){
                     NN[Nlayer][Nnode].bias -= dX * changesThisBatch[Nlayer][Nnode].dBias;
-                    for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
+                    for (var NnodePrev = 0; NnodePrev < nodesPrevLayer; ++NnodePrev){
                         NN[Nlayer][Nnode].weights[NnodePrev] -= dX * changesThisBatch[Nlayer][Nnode].dWeights[NnodePrev];
                     }
                 }
