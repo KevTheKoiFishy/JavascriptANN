@@ -115,17 +115,16 @@ function updateNNg(inputLayer, targetOutput){
         var prevLayerInNNg = NNg[Nlayer - 1];
         
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-            var debugCondition = (Nlayer == NN.length - 2 && Nnode == 0);
+            //*** var debugCondition = (Nlayer == NN.length - 1 && Nnode == 0);
           
             //Store as local var to reduce indexing time
             var thisNodeInNN  = thisLayerInNN [Nnode];
             var thisNodeInNNg = thisLayerInNNg[Nnode];
           
             //how cost changes with final output layer
-            if (debugCondition) console.log(JSON.stringify(thisNodeInNNg));
+            //*** if (debugCondition) console.log(JSON.stringify(thisNodeInNNg));
             if (Nlayer == NN.length - 1)
                 thisNodeInNNg.dValue = dCost_dReLU(thisNodeInNN.value, targetOutput[Nnode]);
-            if (debugCondition) {console.log(JSON.stringify(thisNodeInNNg)); return -1;}
             
             //how cost changes with value of Nlayer's outputs
             var dC_dF = thisNodeInNNg.dValue;            
@@ -134,15 +133,37 @@ function updateNNg(inputLayer, targetOutput){
             //How much each of Nlayer's nodes should change its biases
             thisNodeInNNg.dBias = dC_dF * dReLU_dBias(thisNodeInNN.Z, thisNodeInNN.bias);
           
-            for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
+            var nodesThisLayer = nodesByLayer[Nlayer];
+            var nodesPrevLayer = nodesByLayer[Nlayer - 1];
+            for (var NnodePrev = 0; NnodePrev < nodesPrevLayer; ++NnodePrev){
                 //How much each of Nlayer's nodes wants a given prev layer's node VALUE to change
-                prevLayerInNNg[NnodePrev].dValue += dC_dZ * thisNodeInNN.weights[NnodePrev] / nodesByLayer[Nlayer];
+                prevLayerInNNg[NnodePrev].dValue += dC_dZ * thisNodeInNN.weights[NnodePrev] / nodesThisLayer;
                 // Each of Nlayer's nodes should change each of its weights
                 // proportionally with the prev.layer input value it's weighting in this loop.
                 // IOW if dC/dZ is +, add      more weight to   more positive prev.layer values;
                 //     if dC/dZ is -, subtract more weight from more positive prev.layer values;
-                thisNodeInNNg.dWeights[NnodePrev]  = dC_dZ * prevLayerInNN.value;
+                thisNodeInNNg.dWeights[NnodePrev]  = dC_dZ * prevLayerInNN[NnodePrev].value;
             }
+            //*** if (debugCondition) {console.log(JSON.stringify(thisNodeInNNg)); return -1;}
+          
+          /*** old code for comparison
+          //how cost changes with final output layer
+            if (Nlayer == NN.length - 1)
+                NNg[Nlayer][Nnode].dValue = dCost_dReLU(NN[Nlayer][Nnode].value, targetOutput[Nnode]);
+            
+            //how cost changes with value of Nlayer's outputs
+            var dC_dF = NNg[Nlayer][Nnode].dValue;            
+            var dC_dZ = dC_dF * dReLU_dZ(NN[Nlayer][Nnode].Z, NN[Nlayer][Nnode].bias); //dC_dF * dF/dZ
+            
+            //How much each of Nlayer's nodes should change its biases
+            NNg[Nlayer][Nnode].dBias = dC_dF * dReLU_dBias(NN[Nlayer][Nnode].Z, NN[Nlayer][Nnode].bias);
+            for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
+                //How much each of Nlayer's nodes wants a given prev layer's node to change
+                NNg[Nlayer - 1][NnodePrev].dValue      += dC_dZ * NN[Nlayer][Nnode].weights[NnodePrev] / nodesByLayer[Nlayer];
+                //Each of Nlayer's nodes should change [each of its weights proportionally with the input value it weights]
+                NNg[Nlayer][Nnode].dWeights[NnodePrev]  = dC_dZ * NN[Nlayer - 1][NnodePrev].value;
+            }
+          */
             
             //re-store thisNodeInNNg in thisLayerInNNg var
             thisLayerInNNg[Nnode] = thisNodeInNNg;
