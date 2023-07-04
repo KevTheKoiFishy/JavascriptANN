@@ -105,7 +105,7 @@ function updateNNg(inputLayer, targetOutput){
     initNNg();
     updateNN(inputLayer);
 
-    for (var Nlayer = NN.length; Nlayer > 0; --Nlayer){
+    for (var Nlayer = NN.length - 1; Nlayer > 0; --Nlayer){
       
         //Store as local var to reduce indexing time
         //Used in NnodePrev loop below
@@ -113,6 +113,13 @@ function updateNNg(inputLayer, targetOutput){
         var thisLayerInNNg = NNg[Nlayer];
         var prevLayerInNN  = NN [Nlayer - 1];
         var prevLayerInNNg = NNg[Nlayer - 1];
+        // if (Nlayer == NN.length-1) {
+        //   console.log(JSON.stringify(thisLayerInNN));
+        //   console.log(JSON.stringify(thisLayerInNNg));
+        //   console.log(JSON.stringify(prevLayerInNN));
+        //   console.log(JSON.stringify(prevLayerInNNg));
+        // return 0; }
+
         
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
           
@@ -191,8 +198,6 @@ function backPropagate(cycles, batchSize, dX){
                     }
                 }
             }
-            //***
-            console.log(JSON.stringify(changesThisBatch));
     
             //add changesThisBatch to NN
             for (var Nlayer = 1; Nlayer < numLayers; ++Nlayer){
