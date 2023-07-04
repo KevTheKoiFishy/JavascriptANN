@@ -26,6 +26,7 @@ var nodesByLayer = [gridSize, 16, 16, 10];
   var numLayers = nodesByLayer.length;
 var NN = [];
 function initNN(){
+    NN = []; //the function does not yet remove old layers if reducing network size;
     for (var Nlayer = 0; Nlayer < numLayers; ++Nlayer){
         NN[Nlayer] = [];
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
