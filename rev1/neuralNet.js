@@ -22,7 +22,7 @@ function ReLU(prevLayer, weights, bias){
 //     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
 // ];
 var gridWidth, gridHeight, gridSize;
-var nodesByLayer = [gridSize, 16, 16, 16, 10];
+var nodesByLayer = [gridSize, 16, 16, 10];
   var numLayers = nodesByLayer.length;
 var NN = [];
 function initNN(){
@@ -199,8 +199,7 @@ function backPropagate(cycles, batchSize, dX){
                 if (updateNNg(dataThisBatch[Ndatum + 1], dataThisBatch[Ndatum]) == -1) {return -1;}
     
                 //add 1/batchSize * NNg to changesThisBatch
-                //💀💀💀 I THOUGHT I WAS ADJUSTING FOR BATCH SIZE
-                //BUT THIS JUST MADE THE TRAINING SUPER SLOW
+                //Does dividing by batchsize actually make training faster?
                 
                 for (var Nlayer = 0; Nlayer < numLayers; ++Nlayer){
                   
