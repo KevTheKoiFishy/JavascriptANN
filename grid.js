@@ -1,4 +1,5 @@
 var gridWidth = 16, gridHeight = 16;
+var gridLength = 
 
 //make grid
 var gridContainer = document.getElementById("gridContainer");
@@ -36,50 +37,9 @@ function activate(cell){
   }
 }
 
-//clear (test.html)
-function refreshGrid(){ createGrid(gridWidth, gridHeight) }
+//clear
+// function refreshGrid(){ createGrid(gridWidth, gridHeight) }
+// document.getElementById("CLEAR").addEventListener("click", refreshGrid);
+function initDataGrid() { datagrid = []; for (var Ncell = 0; Ncell < gridWidth * gridHeight)}
+function refreshGrid(){ displayUpdatedNN(); }
 document.getElementById("CLEAR").addEventListener("click", refreshGrid);
-
-//handle console and visuals
-var Ndatum, costValue, averageCostValue;
-var outBox = document.getElementById("exportBox");
-function updateConsoleNow(){
-  //see output layer
-  outBox.innerText = "";
-  outBox.innerText += datagrid + "\n";
-
-  
-  outBox.innerText += "Sample No." + (Ndatum/2 + 1) + "\n";
-  outBox.innerText += "Cost: " + costValue + "\n";
-  outBox.innerText += "Avg Cost: " + averageCostValue + "\n";
-  
-  highestP     = 0;
-  predictedNum = 0;
-  for (var i = 0; i < NN[NN.length - 1].length; ++i){
-    var val = NN[NN.length - 1][i].value;
-    outBox.innerText += "P(" + i + "): " + val + "\n";
-    if (val > highestP){
-      highestP     = val;
-      predictedNum = i;
-    }
-  }
-  
-  outBox.innerText += "PREDICTION: " + predictedNum + "\n";
-  outBox.innerText += "ACCURACY: " + numCorrect + "/" + (Ndatum/2) + " = " + (numCorrect/Ndatum * 2);
-}
-function updateVisualizerNow(){
-  for (var Nlayer = 0; Nlayer < nodesByLayer.length; ++Nlayer){
-      for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
-          var percent = Math.round(NN[Nlayer][Nnode].value*10000)/100;
-          document.getElementById("L"+Nlayer+"_N"+Nnode).setAttribute("style", "background: linear-gradient(0deg, #9037a3 0%, #9037a3 " + percent + "%, #ecf0f8 " + percent + "%, #ecf0f8 100%);");
-          document.getElementById("L"+Nlayer+"_N"+Nnode).setAttribute("activation", NN[Nlayer][Nnode].value);
-      }
-  }
-}
-function displayUpdatedNN(){
-  updateNN(datagrid);
-
-  if (updateConsole)      updateConsoleNow();
-  if (updateVisualizer)   updateVisualizerNow();
-
-}

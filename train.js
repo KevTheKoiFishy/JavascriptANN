@@ -1,6 +1,6 @@
 //make gltich.com compiler stop screaming
 var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer,
-    datagrid, displayUpdatedNN, updateConsole, updateConsoleNow,
+    displayUpdatedNN, updateConsole, updateConsoleNow,
     updateVisualizer, updateVisualizerNow, cost, backPropagate;
 var displayGrid = true;
 
