@@ -1,5 +1,5 @@
 var gridWidth = 16, gridHeight = 16;
-var gridLength = 
+var gridSize = gridWidth*gridHeight;
 
 //make grid
 var gridContainer = document.getElementById("gridContainer");
@@ -40,6 +40,18 @@ function activate(cell){
 //clear
 // function refreshGrid(){ createGrid(gridWidth, gridHeight) }
 // document.getElementById("CLEAR").addEventListener("click", refreshGrid);
-function initDataGrid() { datagrid = []; for (var Ncell = 0; Ncell < gridWidth * gridHeight)}
-function refreshGrid(){ displayUpdatedNN(); }
+//blank datagrid[]
+function initDatagrid() {
+  datagrid = [];
+  for (var Ncell = 0; Ncell < gridSize; ++Ncell)
+    datagrid.push(0);
+}
+//update grid colors based on a d
+function updateGrid(datagrid) {
+  for (var Ncell = 0; Ncell < gridSize; ++Ncell) {
+    document.getElementById(i).setAttribute(
+      "style",
+      "background: rgba(235, 27, 110, " + datagrid[i]*100 + "%);");}
+}
+function refreshGrid()  { initDatagrid(); displayUpdatedNN(); }
 document.getElementById("CLEAR").addEventListener("click", refreshGrid);

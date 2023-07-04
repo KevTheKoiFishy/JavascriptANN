@@ -1,5 +1,5 @@
 //make gltich.com compiler stop screaming
-var trainingData, NN, gridWidth, gridHeight, updateNN, nodesByLayer,
+var trainingData, NN, gridWidth, gridHeight, gridSize, updateNN, nodesByLayer,
     datagrid, displayUpdatedNN, updateConsole, updateConsoleNow,
     updateVisualizer, updateVisualizerNow, cost, backPropagate;
 var displayGrid = true;
@@ -39,7 +39,7 @@ function scrambleTraining(){
 //Convolve
 function convolveGrid(grid, convolutionMatrix) {
   var convolvedGrid = [];
-    for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
+    for (var Ncell = 0; Ncell < gridSize; ++Ncell)
         convolvedGrid.push(0);
 
   for (var Y = 1; Y < gridHeight-1; ++Y) {
@@ -63,113 +63,11 @@ function convolveTraining(convolutionMatrix){
     trainingData[Nsample] = convolveGrid(trainingData[Nsample], convolutionMatrix);
 }
 
-//The below code seems NOT TO WORK - writing 0 to convolvedTrainingData to initialize it
-//seems to also write 0 to the corresponding place in trainingData, corrupting it
-//This may be because trainingData is too big - further investigation required.
-//In any case, the above code works, which initializes a blank convolved grid in a new variable
-//and then writes it to convolvedTrainingData when it's done, rather than initializing on
-//convolvedTrainingData.
-/*
-//Convolve
-
-function convolveGrid(grid, convolutionMatrix) {
-  var convolvedGrid = [];
-    for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
-        convolvedGrid.push(0);
-
-  for (var Y = 1; Y < gridHeight-1; ++Y) {
-    for (var X = 1; X < gridWidth-1; ++X) {
-
-      for (var convolveY = 0; convolveY < 3; ++convolveY) {
-        for (var convolveX = 0; convolveX < 3; ++convolveX) {
-          convolvedGrid              [  X                + gridWidth *  Y                ]
-                += grid              [ (X + convolveX-1) + gridWidth * (Y + convolveY-1) ]
-                *  convolutionMatrix [  convolveX        + 3         *  convolveY        ];
-          // convolvedGrid[Y * gridWidth + X] += grid[(X + convolveX-1) + gridWidth * (Y + convolveY-1)] * convolutionMatrix[(convolveY) * 3 + (convolveX)];
-        }
-      }
-
-    }
-  }
-
-  return convolvedGrid;
-}
-var convolvedTrainingData = trainingData;
-function convolveTraining(convolutionMatrix){
-  
-  //   for (var Y = 0; Y < gridHeight; ++Y){
-  //     for (var X = 0; X < gridWidth; ++X){
-  
-//       var thisMatrix = convolutionMatrix;
-      
-//       //zero weights when edge touching
-//       // if (X == 0)              thisMatrix[0] = 0; thisMatrix[3] = 0; thisMatrix[6] = 0;
-//       // if (Y == 0)              thisMatrix[0] = 0; thisMatrix[1] = 0; thisMatrix[2] = 0;
-//       // if (X == gridWidth - 1)  thisMatrix[2] = 0; thisMatrix[5] = 0; thisMatrix[8] = 0;
-//       // if (Y == gridHeight - 1) thisMatrix[6] = 0; thisMatrix[7] = 0; thisMatrix[8] = 0;
-      
-//       for (var i = 0; i < convolutionMatrix.length; ++i){
-//         var convolveCellX = i%3 - 1;
-//         var convolveCellY = Math.floor(i/3) - 1;
-        
-//         //if out of bounds, return 0; else, return training data value;
-//         var dataAtConvolveCell =
-//             (
-//                convolveCellX < 0
-//             || convolveCellX > gridWidth - 1
-//             || convolveCellY < 0
-//             || convolveCellY < gridHeight - 1
-//             )
-//             ? 0 : trainingData[ (X + convolveCellX) + gridWidth*(Y + convolveCellY) ];
-        
-//         convolvedTrainingData[X + gridWidth * Y] += dataAtConvolveCell * convolutionMatrix[i];
-//       }
-//     }
-//   }
-  
-  //instead of checking if the convolution matrix goes out of bounds and then
-  //returning 0 if it does, simply do not use the out of bounds cases!
-  
-  for (var Nsample = 1; Nsample < trainingData.length; Nsample += 2){
-    //init
-    if (Nsample == 1){
-    for (var Ncell = 0; Ncell < gridWidth*gridHeight; ++Ncell)
-      convolvedTrainingData[Nsample][Ncell] = 0;
-    }
-    
-    var grid = trainingData[Nsample];
-    // var convolvedGrid = convolvedTrainingData[Nsample];
-        console.log(Nsample + " | " + trainingData[Nsample]);
-
-    
-//     for (var Y = 1; Y < gridHeight-1; ++Y){
-//     for (var X = 1; X < gridWidth-1;  ++X){
-//         for (var convolveY = 0; convolveY < 3; ++convolveY){
-//         for (var convolveX = 0; convolveX < 3; ++convolveX){
-//           convolvedGrid[  X                + gridWidth *  Y                ]
-//                 +=                  grid[ (X + convolveX-1) + gridWidth * (Y + convolveY-1) ]
-//                 *      convolutionMatrix[  convolveX        + 3         *  convolveY        ];
-          
-//         // console.log("("+X+","+Y+"), ("+convolveX+","+convolveY+") | " + trainingData[Nsample][ (X + convolveX-1) + gridWidth * (Y + convolveY-1) ]);
-//         }
-//         }
-//     }
-//     }
-    
-//     convolvedTrainingData[Nsample] = convolvedGrid;
-    // trainingData[Nsample] = convolveGrid(trainingData[Nsample], convolutionMatrix);
-    
-  }
-  
-  // trainingData = convolvedTrainingData;
-}
-*/
-
-
 //Cost Function
 var costValue = 0, totalCost = 0, averageCostValue = 0, numCorrect = 0;
 var Ndatum = 0;
 var highestP = 0, predictedNum = 0;
+
 function showCost(){
   costValue = 0, totalCost = 0, averageCostValue = 0;
   Ndatum = 0;
@@ -183,11 +81,10 @@ function showCost(){
           }
         
           else {
-            for (var i = 0; i < nodesByLayer[0]; ++i)
-              if (displayGrid){document.getElementById(i).setAttribute("style", "background: rgba(235, 27, 110, " + trainingData[Ndatum + 1][i]*100 + "%);");}
-              //if (displayGrid){document.getElementById(i).className = (trainingData[Ndatum + 1][i] ? "active" : "inactive");}
-
-            updateNN(trainingData[Ndatum + 1]);
+            datagrid = trainingData[Ndatum + 1];
+            updateGrid(datagrid);
+            
+            updateNN(datagrid);
 
             costValue = cost(NN[NN.length - 1], trainingData[Ndatum + 1]);
             totalCost += costValue;
@@ -212,7 +109,8 @@ function showCost(){
             Ndatum += 2;
           }
 
-      }, 1);
+      }
+      , 1);
 }
 
 document.getElementById("COST").addEventListener("click", showCost);
