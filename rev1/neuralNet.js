@@ -33,7 +33,9 @@ function initNN(){
             if (Nlayer > 0){
                 NN[Nlayer][Nnode] = {weights: [], bias: 0, Z: 0, value: 0};
                 for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
-                    NN[Nlayer][Nnode].weights[NnodePrev] = Math.random()/NN[Nlayer-1].length;
+                    // NN[Nlayer][Nnode].weights[NnodePrev] = Math.random()/NN[Nlayer-1].length;
+                  //in practice the weights average to around 0, so let's start there
+                  NN[Nlayer][Nnode].weights[NnodePrev] = (Math.random()-.5)/NN[Nlayer-1].length;
                 }
             }
         }
