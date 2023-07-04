@@ -3,9 +3,9 @@ function ReLU(prevLayer, weights, bias){
   
     var Z = 0, output = 0;
     var maxSum = prevLayer.length; // map final sum between 0 and 1 (max sum possible is 0 - 2)
-    for (var Ninput = 0; Ninput < prevLayer.length; ++Ninput){
+    //Z = sum of products and weights of pref layer
+    for (var Ninput = 0; Ninput < prevLayer.length; ++Ninput)
         Z += prevLayer[Ninput].value * weights[Ninput];
-    }
     
     if (Z < bias) {output = 0.2 * Z;} else {output = 2*Z - 1.8 * bias;}
     return [Z, output];
@@ -105,25 +105,41 @@ function updateNNg(inputLayer, targetOutput){
     updateNN(inputLayer);
 
     for (var Nlayer = NN.length; Nlayer > 0; --Nlayer){
+      
+        //Store as local var to reduce indexing time
+        //Used in NnodePrev loop below
+        var prevLayerInNN  = NN [Nlayer - 1];
+        var prevLayerInNNg = NNg[Nlayer - 1];
+        
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
+          
+            //Store as local var to reduce indexing time
+            var thisNodeInNN  = NN [Nlayer][Nnode];
+            var thisNodeInNNg = NNg[Nlayer][Nnode];
+          
             //how cost changes with final output layer
             if (Nlayer == NN.length - 1)
-                NNg[Nlayer][Nnode].dValue = dCost_dReLU(NN[Nlayer][Nnode].value, targetOutput[Nnode]);
+                thisNodeInNNg.dValue = dCost_dReLU(thisNodeInNN.value, targetOutput[Nnode]);
             
             //how cost changes with value of Nlayer's outputs
-            var dC_dF = NNg[Nlayer][Nnode].dValue;            
-            var dC_dZ = dC_dF * dReLU_dZ(NN[Nlayer][Nnode].Z, NN[Nlayer][Nnode].bias); //dC_dF * dF/dZ
+            var dC_dF = thisNodeInNNg.dValue;            
+            var dC_dZ = dC_dF * dReLU_dZ(thisNodeInNN.Z, thisNodeInNN.bias); //dC_dF * dF/dZ
             
             //How much each of Nlayer's nodes should change its biases
-            NNg[Nlayer][Nnode].dBias = dC_dF * dReLU_dBias(NN[Nlayer][Nnode].Z, NN[Nlayer][Nnode].bias);
+            thisNodeInNNg.dBias = dC_dF * dReLU_dBias(thisNodeInNN.Z, thisNodeInNN.bias);
           
             for (var NnodePrev = 0; NnodePrev < nodesByLayer[Nlayer - 1]; ++NnodePrev){
                 //How much each of Nlayer's nodes wants a given prev layer's node VALUE to change
-                NNg[Nlayer - 1][NnodePrev].dValue      += dC_dZ * NN[Nlayer][Nnode].weights[NnodePrev] / nodesByLayer[Nlayer];
-                //Each of Nlayer's nodes should change each of its weights
-                //proportionally with the prev.layer input value it weights
-                NNg[Nlayer][Nnode].dWeights[NnodePrev]  = dC_dZ * NN[Nlayer - 1][NnodePrev].value;
+                prevLayerInNNg[NnodePrev].dValue += dC_dZ * thisNodeInNN.weights[NnodePrev] / nodesByLayer[Nlayer];
+                // Each of Nlayer's nodes should change each of its weights
+                // proportionally with the prev.layer input value it's weighting in this loop.
+                // IOW if dC/dZ is +, add      more weight to   more positive prev.layer values;
+                //     if dC/dZ is -, subtract more weight from more positive prev.layer values;
+                thisNodeInNNg.dWeights[NnodePrev]  = dC_dZ * prevLayerInNN.value;
             }
+            
+            //re-store thisNodeInNNg in global var
+            NNg[Nlayer][Nnode] = thisNodeInNNg;
         }
     }
 }
