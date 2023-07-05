@@ -1,6 +1,5 @@
 //activation function: leaky ReLU
 function ReLU(prevLayer, weights, bias){
-  
     var Z = 0, output = 0;
     var maxSum = prevLayer.length; // map final sum between 0 and 1 (max sum possible is 0 - 2)
     //Z = sum of products and weights of pref layer
@@ -22,7 +21,7 @@ function ReLU(prevLayer, weights, bias){
 //     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
 // ];
 var gridWidth, gridHeight, gridSize;
-var nodesByLayer = [gridSize, 8, 10];
+var nodesByLayer = [gridSize, 10, 10];
   var numLayers = nodesByLayer.length;
 var NN = [];
 function initNN(){
@@ -234,9 +233,7 @@ function backPropagate(cycles, batchSize, dX){
             }
             
         }
-        
-        //dX *= 0.99;
+        //dX *= 0.99
     }
-  
     localStorage.setItem("NN", JSON.stringify(NN));
 }
