@@ -21,7 +21,7 @@ function ReLU(prevLayer, weights, bias){
 //     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
 // ];
 var gridWidth, gridHeight, gridSize;
-var nodesByLayer = [gridSize, 10, 10];
+var nodesByLayer = [gridSize, 10];
   var numLayers = nodesByLayer.length;
 var NN = [];
 function initNN(){
