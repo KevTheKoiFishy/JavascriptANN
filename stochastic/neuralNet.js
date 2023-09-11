@@ -1,6 +1,6 @@
 //activation function: leaky ReLU
-const STOCHASTIC_HIGH = 0.9;
-const STOCHASTIC_LOW  = 0.1;
+// const STOCHASTIC_HIGH = 0.9;
+// const STOCHASTIC_LOW  = 0.1;
 
 function ReLU(prevLayer, weights, bias){
     var Z = 0, output = 0;
@@ -12,9 +12,10 @@ function ReLU(prevLayer, weights, bias){
     if (Z < bias) {output = 0.2 * Z;} else {output = 2*Z - 1.8 * bias;}
     
     // The higher the output, the more likely it will be to take the high value
-    var outputExceedsRandom = Math.random() < output;
-    output = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
-    Z = output; // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
+    // var outputExceedsRandom = Math.random() < output;
+    // output = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
+    // Z = output; // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
+    // output += 0.5*(Math.random() * 2 - 1)**3;
     
     return [Z, output];
   
