@@ -65,20 +65,22 @@ function updateNN(inputLayer){
     for (var Nlayer = 1; Nlayer < numLayers; ++Nlayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             var ReLUOut = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].bias);
+          
             // ORIGINAL: DETERMINISTIC
               // NN[Nlayer][Nnode].Z     = ReLUOut[0];
               // NN[Nlayer][Nnode].value = ReLUOut[1];
           
-            // The higher the output, the more likely it will be to take the high value
-            // Make exception for last layer
-            if (Nlayer < numLayers - 1){
-              var outputExceedsRandom = Math.random() < ReLUOut[0];
-              ReLUOut[0] = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
-              ReLUOut[1] = ReLUOut[0];  // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
-            }
-          
-            NN[Nlayer][Nnode].Z     = ReLUOut[0];
-            NN[Nlayer][Nnode].value = ReLUOut[1];
+            // IDEA 1: BINARY VALUE
+              // The higher the output, the more likely it will be to take the high value
+              // Make exception for last layer
+              if (Nlayer < numLayers - 1){
+                var outputExceedsRandom = Math.random() < ReLUOut[0];
+                ReLUOut[0] = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
+                ReLUOut[1] = ReLUOut[0];  // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
+              }
+
+              NN[Nlayer][Nnode].Z     = ReLUOut[0];
+              NN[Nlayer][Nnode].value = ReLUOut[1];
           
         }
     }
