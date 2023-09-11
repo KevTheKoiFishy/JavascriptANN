@@ -1,6 +1,4 @@
 //activation function: leaky ReLU
-// const STOCHASTIC_HIGH = 0.9;
-// const STOCHASTIC_LOW  = 0.1;
 
 function ReLU(prevLayer, weights, bias){
     var Z = 0, output = 0;
@@ -10,13 +8,7 @@ function ReLU(prevLayer, weights, bias){
         Z += prevLayer[Ninput].value * weights[Ninput];
     
     if (Z < bias) {output = 0.2 * Z;} else {output = 2*Z - 1.8 * bias;}
-    
-    // The higher the output, the more likely it will be to take the high value
-    // var outputExceedsRandom = Math.random() < output;
-    // output = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
-    // Z = output; // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
-    // output += 0.5*(Math.random() * 2 - 1)**3;
-    
+        
     return [Z, output];
   
 };
@@ -31,7 +23,7 @@ function ReLU(prevLayer, weights, bias){
 //     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
 // ];
 var gridWidth, gridHeight, gridSize;
-var nodesByLayer = [gridSize, 50, 10];
+var nodesByLayer = [gridSize, 100, 10];
   var numLayers = nodesByLayer.length;
 var NN = [];
 function initNN(){
@@ -60,6 +52,9 @@ if (localStorage.getItem("NN")) {
   localStorage.setItem("NN", JSON.stringify(NN));
 }
 
+const STOCHASTIC_HIGH = 0.8;
+const STOCHASTIC_LOW  = 0.2;
+
 function updateNN(inputLayer){
     //load first layer
     var Nlayer = 0;
@@ -70,8 +65,21 @@ function updateNN(inputLayer){
     for (var Nlayer = 1; Nlayer < numLayers; ++Nlayer){
         for (var Nnode = 0; Nnode < nodesByLayer[Nlayer]; ++Nnode){
             var ReLUOut = ReLU(NN[Nlayer - 1], NN[Nlayer][Nnode].weights, NN[Nlayer][Nnode].bias);
+            // ORIGINAL: DETERMINISTIC
+              // NN[Nlayer][Nnode].Z     = ReLUOut[0];
+              // NN[Nlayer][Nnode].value = ReLUOut[1];
+          
+            // The higher the output, the more likely it will be to take the high value
+            // Make exception for last layer
+            if (Nlayer < numLayers - 1){
+              var outputExceedsRandom = Math.random() < ReLUOut[0];
+              ReLUOut[0] = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
+              ReLUOut[1] = ReLUOut[0];  // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
+            }
+          
             NN[Nlayer][Nnode].Z     = ReLUOut[0];
             NN[Nlayer][Nnode].value = ReLUOut[1];
+          
         }
     }
 }
@@ -113,6 +121,7 @@ function dReLU_dZ    (Z, bias)     { return (Z > bias) ? 1 : 0.2; }
 // function dValue  (weight)          { return weight;               }
 // function dWeight (PrevLayerValue)  { return PrevLayerValue;       }
 function dReLU_dBias (Z, bias)     { return (Z > bias) ? -2 : 0;  }
+
 function updateNNg(inputLayer, targetOutput){
     initNNg();
     updateNN(inputLayer);
