@@ -14,7 +14,7 @@ function ReLU(prevLayer, weights, bias){
     // The higher the output, the more likely it will be to take the high value
     var outputExceedsRandom = Math.random() < output;
     output = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
-    Z = output; // use
+    Z = output; // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
     
     return [Z, output];
   
