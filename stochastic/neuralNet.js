@@ -74,9 +74,9 @@ function updateNN(inputLayer){
               // The higher the output, the more likely it will be to take the high value
               // Make exception for last layer
               if (Nlayer < numLayers - 1){
-                var outputExceedsRandom = Math.random() < ReLUOut[0];
-                ReLUOut[0] = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
-                ReLUOut[1] = ReLUOut[0];  // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
+                var outputExceedsRandom = Math.random() < ReLUOut[1];
+                ReLUOut[1] = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
+                // ReLUOut[0] = ReLUOut[1];  // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
               }
 
               NN[Nlayer][Nnode].Z     = ReLUOut[0];
