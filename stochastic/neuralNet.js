@@ -53,7 +53,7 @@ if (localStorage.getItem("NN")) {
 }
 
 const STOCHASTIC_HIGH = 0.8;
-const STOCHASTIC_LOW  = 0.4;
+const STOCHASTIC_LOW  = 0.2;
 
 function updateNN(inputLayer){
     //load first layer
@@ -73,11 +73,11 @@ function updateNN(inputLayer){
             // IDEA 1: BINARY VALUE
               // The higher the output, the more likely it will be to take the high value
               // Make exception for last layer
-              // if (Nlayer < numLayers - 1){
-              //   var outputExceedsRandom = Math.random() < ReLUOut[1];
-              //   ReLUOut[1] = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
-              //   // ReLUOut[0] = ReLUOut[1];  // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
-              // }
+              if (Nlayer < numLayers - 1){
+                var outputExceedsRandom = Math.random() < ReLUOut[1];
+                ReLUOut[1] = outputExceedsRandom ? STOCHASTIC_HIGH : STOCHASTIC_LOW;
+                // ReLUOut[0] = ReLUOut[1];  // Train the NN using the stochastic value. I'll take it out if it doesn't train haha.
+              }
 
               NN[Nlayer][Nnode].Z     = ReLUOut[0];
               NN[Nlayer][Nnode].value = ReLUOut[1];
