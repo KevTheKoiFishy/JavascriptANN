@@ -23,7 +23,7 @@ function ReLU(prevLayer, weights, bias){
 //     [{value: undefined, Z: undefined, weights: [0.5, 0.5], bias: 0}],
 // ];
 var gridWidth, gridHeight, gridSize;
-var nodesByLayer = [gridSize, 100, 10];
+var nodesByLayer = [gridSize, 20, 10];
   var numLayers = nodesByLayer.length;
 var NN = [];
 function initNN(){
@@ -53,7 +53,7 @@ if (localStorage.getItem("NN")) {
 }
 
 const STOCHASTIC_HIGH = 0.8;
-const STOCHASTIC_LOW  = 0.2;
+const STOCHASTIC_LOW  = 0.4;
 
 function updateNN(inputLayer){
     //load first layer
